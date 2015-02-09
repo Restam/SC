@@ -1,0 +1,14 @@
+program SchoolCalendar;
+
+uses
+  System.StartUpCopy,
+  FMX.Forms,
+  MainUnit in '..\..\Google Calendar\Run Time\MainUnit.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

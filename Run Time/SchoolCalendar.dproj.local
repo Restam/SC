@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.953,=C:\Delphi Projects\School Calendar\x-superobject\XSuperJSON.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.303,C:\Delphi Projects\School Calendar\x-superobject\XSuperJSON.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.641,=C:\Delphi Projects\School Calendar\superobjectv1.2.4\superobject.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.560,C:\Delphi Projects\School Calendar\superobjectv1.2.4\superobject.pas=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.799,=C:\Delphi Projects\School Calendar\Run Time\MainUnit.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.663,C:\Delphi Projects\Google Calendar\Run Time\MainUnit.pas=C:\Users\Asus\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.655,=C:\Delphi Projects\School Calendar\x-superobject\XSuperJSON.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.676,C:\Delphi Projects\School Calendar\Run Time\SchoolCalendar.dproj=C:\Users\Asus\Documents\Embarcadero\Studio\Projects\SchoolCalendar.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.187,=C:\Delphi Projects\School Calendar\x-superobject\XSuperObject.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.566,=C:\Delphi Projects\School Calendar\bin\ssleay32.dll</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.153,C:\Users\Asus\Documents\Embarcadero\Studio\Projects\SchoolCalendar.dproj=C:\Users\Asus\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.663,C:\Delphi Projects\Google Calendar\Run Time\MainUnit.fmx=C:\Users\Asus\Documents\Embarcadero\Studio\Projects\Unit1.fmx</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.128,C:\Delphi Projects\School Calendar\bin\ssleay32.dll=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.275,C:\Delphi Projects\School Calendar\bin\libeay32.dll=</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.683,=C:\Users\Asus\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.082,=C:\Delphi Projects\OAuthClient\Google.OAuth.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.485,=C:\Delphi Projects\School Calendar\bin\libeay32.dll</Transaction>
+  </Transactions>
+</BorlandProject>
