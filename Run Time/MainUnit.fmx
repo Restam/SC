@@ -128,7 +128,7 @@ object SCalendar: TSCalendar
     TokenInfo.CalendarScopes.Readonly = False
     TokenInfo.TasksScopes.FullAccess = False
     TokenInfo.TasksScopes.Readonly = False
-    SaveFields = [sfClientSecret, sfRedirectURI, sfState, sfLoginHint]
+    SaveFields = []
     DefaultContentType = ctJSON
     ValidateOnLoad = False
     OpenStartURL = False

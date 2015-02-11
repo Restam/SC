@@ -114,6 +114,7 @@ begin
   begin
     ToTimer.Enabled := True;
     TimePanel.Visible := True;
+    TimePanel.BringToFront;
   end;
 end;
 
@@ -138,12 +139,12 @@ end;
 
 procedure TSCalendar.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  GoogleClient.SaveToFile('access.tmp');
+  //GoogleClient.SaveToFile('access.tmp');
 end;
 
 procedure TSCalendar.FormCreate(Sender: TObject);
 begin
-  GoogleClient.LoadFromFile('access.tmp');
+  //GoogleClient.LoadFromFile('access.tmp');
   CalendarList := TStringList.Create;
   EventList := TStringList.Create;
   //LoginPanel.Visible := True;
@@ -219,7 +220,10 @@ begin
   ToTimer.Enabled := False;
  end
  else
+ begin
   ChCaPanel.Visible := True;
+  ChCaPanel.BringToFront;
+ end;
 end;
 
 procedure TSCalendar.ToTimerTimer(Sender: TObject);
@@ -253,7 +257,7 @@ begin
       HttpEncode(CalendarList.Values[CalendarBox.Selected.Text])+'/events/'+
       HttpEncode(EventList.Values[EventBox.Selected.Text]);
     GoogleClient.Get(RequestString,Response);
-    Response.SaveToFile('eventget.json');
+    //Response.SaveToFile('eventget.json');
     JsonObject := SO(Response.DataString);
     SummaryLabel.Text := UTF8Decode(JsonObject.S['summary']);
     StartTimeEdit.Date := StrToDateTime(JsonObject.O['start'].S['date'],FormatSettings);
@@ -276,7 +280,7 @@ begin
   Response := TStringStream.Create;
   try
     GoogleClient.Get('https://www.googleapis.com/calendar/v3/users/me/calendarList',Response);
-    Response.SaveToFile('calendarlist.json');
+    //Response.SaveToFile('calendarlist.json');
     JsonObject := SO(Response.DataString);
     JSONArray := JsonObject['items'].AsArray;
     CalendarList.Clear;
@@ -308,7 +312,7 @@ begin
     RequestString := 'https://www.googleapis.com/calendar/v3/calendars/'+
       HttpEncode(CalendarList.Values[CalendarBox.Selected.Text])+'/events?singleEvents=true&orderBy=startTime';
     GoogleClient.Get(RequestString,Response);
-    Response.SaveToFile('eventlist.json');
+    //Response.SaveToFile('eventlist.json');
     JsonObject := SO(Response.DataString);
     JSONArray := JsonObject['items'].AsArray;
     EventList.Clear;
@@ -345,12 +349,12 @@ begin
       FStr := URL.Substring(pos('code=',URL)+'code='.Length-1);
       ShowMessage(FStr);
       GoogleClient.EndConnect(Fstr);
-      ShowMessage('norm');
+      //ShowMessage(DateToStr(GoogleClient.TokenInfo.ExpiresTime));
       Login.Enabled := False;
       WebBrowser.Visible := False;
+      ChCaPanel.Visible:=True;
       UpdateCalendarMenu;
       LoginPanel.Visible:=False;
-      ChCaPanel.Visible:=True;
     except
     end;
   end;
