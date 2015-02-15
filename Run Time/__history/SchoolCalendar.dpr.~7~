@@ -6,7 +6,7 @@ uses
   MainUnit in 'MainUnit.pas' {SCalendar},
   XSuperJSON in '..\x-superobject\XSuperJSON.pas',
   XSuperObject in '..\x-superobject\XSuperObject.pas',
-  Google.OAuth in '..\OAuthClient\Google.OAuth.pas';
+  Google.OAuth in '..\..\OAuthClient\Google.OAuth.pas';
 
 {$R *.res}
 
