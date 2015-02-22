@@ -32,7 +32,7 @@ object SCalendar: TSCalendar
       Align = Client
       StyledSettings = [Family, Style, FontColor]
       Size.Width = 290.000000000000000000
-      Size.Height = 261.000000000000000000
+      Size.Height = 251.000000000000000000
       Size.PlatformDefault = False
       TextSettings.Font.Size = 24.000000000000000000
       TextSettings.HorzAlign = Center
@@ -47,7 +47,7 @@ object SCalendar: TSCalendar
       Margins.Right = 15.000000000000000000
       Margins.Bottom = 5.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 288.000000000000000000
+      Position.Y = 278.000000000000000000
       Size.Width = 260.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -61,7 +61,7 @@ object SCalendar: TSCalendar
       Margins.Right = 15.000000000000000000
       Margins.Bottom = 5.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 347.000000000000000000
+      Position.Y = 337.000000000000000000
       Size.Width = 260.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -74,7 +74,7 @@ object SCalendar: TSCalendar
       Margins.Top = 5.000000000000000000
       Margins.Right = 15.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 266.000000000000000000
+      Position.Y = 256.000000000000000000
       Size.Width = 260.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
@@ -88,7 +88,7 @@ object SCalendar: TSCalendar
       Margins.Right = 15.000000000000000000
       Margins.Bottom = 5.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 325.000000000000000000
+      Position.Y = 315.000000000000000000
       Size.Width = 260.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
@@ -98,17 +98,19 @@ object SCalendar: TSCalendar
     object EditSaveButton: TButton
       Align = Bottom
       Enabled = False
+      StyledSettings = [Family, Style, FontColor]
       Margins.Left = 15.000000000000000000
       Margins.Top = 10.000000000000000000
       Margins.Right = 15.000000000000000000
       Margins.Bottom = 15.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 394.000000000000000000
+      Position.Y = 384.000000000000000000
       Size.Width = 260.000000000000000000
-      Size.Height = 40.000000000000000000
+      Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 5
       Text = 'Edit'
+      TextSettings.Font.Size = 20.000000000000000000
     end
   end
   object GoogleClient: TOAuthClient
@@ -168,7 +170,7 @@ object SCalendar: TSCalendar
     object EventBox: TListBox
       Align = Client
       Size.Width = 192.999969482421900000
-      Size.Height = 399.000000000000000000
+      Size.Height = 449.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 0
       OnClick = EventBoxClick
@@ -177,31 +179,14 @@ object SCalendar: TSCalendar
       DefaultItemStyles.GroupHeaderStyle = ''
       DefaultItemStyles.GroupFooterStyle = ''
     end
-    object FilterButton: TButton
-      Align = Bottom
-      StyledSettings = [Family, Style, FontColor]
-      Margins.Left = 5.000000000000000000
-      Margins.Top = 5.000000000000000000
-      Margins.Right = 5.000000000000000000
-      Margins.Bottom = 5.000000000000000000
-      Position.X = 5.000000000000000000
-      Position.Y = 404.000000000000000000
-      Size.Width = 183.000000000000000000
-      Size.Height = 40.000000000000000000
-      Size.PlatformDefault = False
-      TabOrder = 2
-      Text = 'Filter'
-      TextSettings.Font.Size = 18.000000000000000000
-    end
   end
   object ChCaPanel: TCalloutPanel
     Touch.GestureManager = EventsManager
     Align = Top
     Padding.Top = 11.000000000000000000
     Size.Width = 290.000000000000000000
-    Size.Height = 145.000000000000000000
+    Size.Height = 209.000000000000000000
     Size.PlatformDefault = False
-    Visible = False
     TabOrder = 38
     CalloutWidth = 23.000000000000000000
     CalloutLength = 11.000000000000000000
@@ -212,9 +197,9 @@ object SCalendar: TSCalendar
       Margins.Right = 10.000000000000000000
       Margins.Bottom = 10.000000000000000000
       Size.Width = 270.000000000000000000
-      Size.Height = 29.000000000000000000
+      Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 0
+      TabOrder = 1
     end
     object ChCaLabel: TLabel
       Align = Top
@@ -227,23 +212,45 @@ object SCalendar: TSCalendar
       Size.Width = 270.000000000000000000
       Size.Height = 25.000000000000000000
       Size.PlatformDefault = False
-      TextSettings.Font.Size = 16.000000000000000000
+      TextSettings.Font.Size = 20.000000000000000000
       TextSettings.HorzAlign = Center
       Text = 'Choose Calendar'
     end
     object UpEventsButton: TButton
       Align = Bottom
+      StyledSettings = [Family, Style, FontColor]
       Margins.Left = 10.000000000000000000
       Margins.Right = 10.000000000000000000
       Margins.Bottom = 10.000000000000000000
       Position.X = 10.000000000000000000
-      Position.Y = 95.000000000000000000
+      Position.Y = 149.000000000000000000
       Size.Width = 270.000000000000000000
-      Size.Height = 40.000000000000000000
+      Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
-      TabOrder = 2
+      TabOrder = 3
       Text = 'Update events'
+      TextSettings.Font.Size = 20.000000000000000000
       OnClick = UpEventsButtonClick
+    end
+    object FilterBox: TComboBox
+      Align = Bottom
+      Items.Strings = (
+        'today school-time'
+        'today after-school'
+        'tomorrow'
+        'From now to 5 days'
+        'From now to 30 days'
+        'From now to future')
+      Margins.Left = 10.000000000000000000
+      Margins.Top = 10.000000000000000000
+      Margins.Right = 10.000000000000000000
+      Margins.Bottom = 10.000000000000000000
+      Position.X = 10.000000000000000000
+      Position.Y = 107.000000000000000000
+      Size.Width = 270.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
     end
   end
   object LoginPanel: TCalloutPanel
@@ -351,6 +358,12 @@ object SCalendar: TSCalendar
     Left = 40
     Top = 64
   end
+  object UpdateTimer: TTimer
+    Interval = 100
+    OnTimer = UpdateTimerTimer
+    Left = 40
+    Top = 176
+  end
   object EventsManager: TGestureManager
     Left = 224
     Top = 64
@@ -423,11 +436,5 @@ object SCalendar: TSCalendar
       Text = 'DownTopPanning'
       OnExecute = DownTopPanningExecute
     end
-  end
-  object UpdateTimer: TTimer
-    Interval = 100
-    OnTimer = UpdateTimerTimer
-    Left = 40
-    Top = 176
   end
 end

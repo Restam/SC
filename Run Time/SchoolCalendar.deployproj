@@ -12,8 +12,8 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\IconsFinal\1S480.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>SchoolCalendar\res\drawable-large\</RemoteDir>
+        <DeployFile Include="..\IconsFinal\1S320.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SchoolCalendar\res\drawable-normal\</RemoteDir>
             <RemoteName>splash_image.png</RemoteName>
             <Operation>1</Operation>
             <LocalCommand/>
@@ -28,16 +28,8 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\IconsFinal\I144.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>SchoolCalendar\res\drawable-xxhdpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\IconsFinal\I48.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>SchoolCalendar\res\drawable-mdpi\</RemoteDir>
+        <DeployFile Include="..\IconsFinal\I36.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SchoolCalendar\res\drawable-ldpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
             <Operation>1</Operation>
             <LocalCommand/>
@@ -77,6 +69,14 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\IconsFinal\I144.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SchoolCalendar\res\drawable-xxhdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="C:\Users\Public\Documents\Embarcadero\Studio\15.0\PlatformSDKs\android-ndk-r9c\prebuilt\android-arm\gdbserver\gdbserver" Condition="'$(Config)'=='Debug'">
             <RemoteDir>SchoolCalendar\library\lib\armeabi-v7a\</RemoteDir>
             <RemoteName>gdbserver</RemoteName>
@@ -109,6 +109,14 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
+        <DeployFile Include="..\IconsFinal\I72.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SchoolCalendar\res\drawable-hdpi\</RemoteDir>
+            <RemoteName>ic_launcher.png</RemoteName>
+            <Operation>1</Operation>
+            <LocalCommand/>
+            <RemoteCommand/>
+            <Overwrite>True</Overwrite>
+        </DeployFile>
         <DeployFile Include="..\IconsFinal\I96.png" Condition="'$(Config)'=='Debug'">
             <RemoteDir>SchoolCalendar\res\drawable-xhdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
@@ -117,9 +125,9 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\IconsFinal\I36.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>SchoolCalendar\res\drawable-ldpi\</RemoteDir>
-            <RemoteName>ic_launcher.png</RemoteName>
+        <DeployFile Include="..\IconsFinal\1S480.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SchoolCalendar\res\drawable-large\</RemoteDir>
+            <RemoteName>splash_image.png</RemoteName>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>
@@ -133,17 +141,9 @@
             <RemoteCommand/>
             <Overwrite>True</Overwrite>
         </DeployFile>
-        <DeployFile Include="..\IconsFinal\I72.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>SchoolCalendar\res\drawable-hdpi\</RemoteDir>
+        <DeployFile Include="..\IconsFinal\I48.png" Condition="'$(Config)'=='Debug'">
+            <RemoteDir>SchoolCalendar\res\drawable-mdpi\</RemoteDir>
             <RemoteName>ic_launcher.png</RemoteName>
-            <Operation>1</Operation>
-            <LocalCommand/>
-            <RemoteCommand/>
-            <Overwrite>True</Overwrite>
-        </DeployFile>
-        <DeployFile Include="..\IconsFinal\1S320.png" Condition="'$(Config)'=='Debug'">
-            <RemoteDir>SchoolCalendar\res\drawable-normal\</RemoteDir>
-            <RemoteName>splash_image.png</RemoteName>
             <Operation>1</Operation>
             <LocalCommand/>
             <RemoteCommand/>

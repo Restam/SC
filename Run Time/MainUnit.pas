@@ -37,7 +37,6 @@ type
     CalendarItem: TMenuItem;
     UpEventsButton: TButton;
     EventBox: TListBox;
-    FilterButton: TButton;
     SummaryLabel: TLabel;
     StartTimeEdit: TDateEdit;
     EndTimeEdit: TDateEdit;
@@ -54,6 +53,7 @@ type
     TimeLabel: TLabel;
     ToTimer: TTimer;
     UpdateTimer: TTimer;
+    FilterBox: TComboBox;
     procedure LeftRightPanningExecute(Sender: TObject);
     procedure RightLeftPanningExecute(Sender: TObject);
     procedure EventsControlGesture(Sender: TObject;
@@ -77,13 +77,14 @@ type
   private
     { Private declarations }
     procedure UpdateCalendarMenu;
-    procedure UpdateCalendarEvents;
+    procedure UpdateCalendarEvents(AFilter: Integer);
     procedure UpdateEventView;
   public
     { Public declarations }
   end;
     //function EncodeURIComponent(const ASrc: string): UTF8String;
     procedure RearrangeEvents;
+    function BuildRequest(AFilter: Integer): String;
 var
   SCalendar: TSCalendar;
   CalendarList, EventList: TStringList;
@@ -329,21 +330,52 @@ begin
     end;
 end;
 
-procedure TSCalendar.UpdateCalendarEvents;
+function BuildRequest(AFilter: Integer): String;
+var
+  LocalN: TDateTime;
+begin
+  LocalN := TTimeZone.Local.ToUniversalTime(now);
+  Result := 'https://www.googleapis.com/calendar/v3/calendars/'+
+      HttpEncode(CalendarList.Values[SCalendar.CalendarBox.Selected.Text])
+      +'/events?singleEvents=true&orderBy=startTime';
+  case AFilter of
+    0: Result := Result + '&timeMax=' + HttpEncode(
+      FormatDateTime('yyyy-MM-dd',TTimeZone.Local.ToUniversalTime(LocalN))
+      +'T16:00:00+00:00')+'&timeMin='+
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
+    1: Result := Result + '&timeMax=' + HttpEncode(
+      FormatDateTime('yyyy-MM-dd',TTimeZone.Local.ToUniversalTime(LocalN))
+      +'T23:59:59+00:00')+'&timeMin='+ HttpEncode(
+      FormatDateTime('yyyy-MM-dd',LocalN) + 'T16:00:00+00:00');
+    2: Result := Result + '&timeMax=' +
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+2)
+      +'T00:00:00+00:00')+'&timeMin='+
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+1) + 'T00:00:00+00:00');
+    3: Result := Result + '&timeMax=' +
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+5)
+      +'T00:00:00+00:00')+'&timeMin='+
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
+    4: Result := Result + '&timeMax=' +
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+30)
+      +'T00:00:00+00:00')+'&timeMin='+
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
+    5: Result := Result + '&timeMin=' +
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
+  end;
+end;
+
+procedure TSCalendar.UpdateCalendarEvents(AFilter: Integer);
 var
   Response: TStringStream;
   JSONArray: ISuperArray;
   JsonObject, EventInf: ISuperObject;
   i: Integer;
   RequestString: String;
-  TimeMin: TDateTime;
 begin
   Response := TStringStream.Create;
   try
-    TimeMin := TTimeZone.Local.ToUniversalTime(now);
-    RequestString := 'https://www.googleapis.com/calendar/v3/calendars/'+
-      HttpEncode(CalendarList.Values[CalendarBox.Selected.Text])+'/events?singleEvents=true&orderBy=startTime'+
-      '&timeMin='+HttpEncode(FormatDateTime('yyyy-MM-dd',TimeMin)+'T00:00:00+00:00');
+    RequestString := BuildRequest(AFilter);
+    ShowMessage(RequestString);
     GoogleClient.Get(RequestString,Response);
     //Response.SaveToFile('eventlist.json');
     JsonObject := SO(Response.DataString);
@@ -368,8 +400,8 @@ end;
 
 procedure TSCalendar.UpEventsButtonClick(Sender: TObject);
 begin
-  if CalendarBox.Selected <> nil then
-    UpdateCalendarEvents;
+  if (CalendarBox.Selected <> nil) and (FilterBox.Selected <> nil) then
+    UpdateCalendarEvents(FilterBox.ItemIndex);
 end;
 
 procedure TSCalendar.WebBrowserShouldStartLoadWithRequest(ASender: TObject;
