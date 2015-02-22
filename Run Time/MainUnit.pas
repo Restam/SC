@@ -6,12 +6,12 @@ uses
   System.SysUtils, System.JSON, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, Google.OAuth, HttpApp,DateUtils,
   FMX.StdCtrls, System.Actions, FMX.ActnList, FMX.Menus, FMX.Layouts, XSuperJson, XSuperObject,
-  FMX.Gestures, FMX.Controls.Presentation, FMX.Edit, FMX.ListBox
+  FMX.Gestures, FMX.Controls.Presentation, FMX.Edit, FMX.ListBox,
+  FMX.DateTimeCtrls
   {$IFDEF WIN32}
-    ,ShellApi, Windows, FMX.Objects, FMX.Calendar, FMX.DateTimeCtrls,
-  FMX.WebBrowser;
+    ,ShellApi, Windows, FMX.Calendar, FMX.WebBrowser;
   {$ElSE}
-    ,FMX.Objects, FMX.Calendar, FMX.DateTimeCtrls,FMX.WebBrowser;
+    ,FMX.Calendar, FMX.WebBrowser;
   {$ENDIF}
 
 type
@@ -37,7 +37,6 @@ type
     CalendarItem: TMenuItem;
     UpEventsButton: TButton;
     EventBox: TListBox;
-    FilterButton: TButton;
     SummaryLabel: TLabel;
     StartTimeEdit: TDateEdit;
     EndTimeEdit: TDateEdit;
@@ -53,6 +52,8 @@ type
     LeftLabel: TLabel;
     TimeLabel: TLabel;
     ToTimer: TTimer;
+    UpdateTimer: TTimer;
+    FilterBox: TComboBox;
     procedure LeftRightPanningExecute(Sender: TObject);
     procedure RightLeftPanningExecute(Sender: TObject);
     procedure EventsControlGesture(Sender: TObject;
@@ -72,16 +73,18 @@ type
       const URL: string);
     procedure RefreshTokenTimerTimer(Sender: TObject);
     procedure ToTimerTimer(Sender: TObject);
+    procedure UpdateTimerTimer(Sender: TObject);
   private
     { Private declarations }
     procedure UpdateCalendarMenu;
-    procedure UpdateCalendarEvents;
+    procedure UpdateCalendarEvents(AFilter: Integer);
     procedure UpdateEventView;
   public
     { Public declarations }
   end;
     //function EncodeURIComponent(const ASrc: string): UTF8String;
-
+    procedure RearrangeEvents;
+    function BuildRequest(AFilter: Integer): String;
 var
   SCalendar: TSCalendar;
   CalendarList, EventList: TStringList;
@@ -89,6 +92,18 @@ implementation
 
 {$R *.fmx}
 {$R *.SmXhdpiPh.fmx ANDROID}
+
+procedure RearrangeEvents;
+var
+  i, Mid: Integer;
+begin
+  Mid := (EventList.Count-1) div 2;
+  for i := 0 to Mid do
+  begin
+    EventList.Exchange(i,EventList.Count-1-i);
+    SCalendar.EventBox.Items.Exchange(i,EventList.Count-1-i);
+  end;
+end;
 
 procedure TSCalendar.AccountItemClick(Sender: TObject);
 begin
@@ -109,7 +124,10 @@ end;
 procedure TSCalendar.DownTopPanningExecute(Sender: TObject);
 begin
   if ChCaPanel.Visible then
-    ChCaPanel.Visible := False
+  begin
+    ChCaPanel.Visible := False;
+    ChCaPanel.SendToBack;
+  end
   else
   begin
     ToTimer.Enabled := True;
@@ -120,7 +138,10 @@ end;
 
 procedure TSCalendar.EventBoxClick(Sender: TObject);
 begin
-  UpdateEventView;
+  try
+    UpdateEventView;
+  except
+  end;
 end;
 
 procedure TSCalendar.EventsControlGesture(Sender: TObject;
@@ -133,7 +154,7 @@ begin
    if s = 'sgiLeft' then LeftRightPanning.Execute;
    if s = 'sgiRight' then RightLeftPanning.Execute;
    if s = 'sgiDown' then TopDownPanning.Execute;
-   if s = 'sgiTop' then DownTopPanning.Execute;
+   if s = 'sgiUp' then DownTopPanning.Execute;
   end;
 end;
 
@@ -195,8 +216,8 @@ end;
 
 procedure TSCalendar.MainPanelClick(Sender: TObject);
 begin
-  ChCaPanel.Visible := False;
-  LoginPanel.Visible := False;
+  //ChCaPanel.Visible := False;
+  //LoginPanel.Visible := False;
 end;
 
 procedure TSCalendar.RefreshTokenTimerTimer(Sender: TObject);
@@ -218,6 +239,7 @@ begin
  begin
   TimePanel.Visible := False;
   ToTimer.Enabled := False;
+  TimePanel.SendToBack;
  end
  else
  begin
@@ -231,11 +253,10 @@ begin
   if EventBox.ItemByIndex(0) <> nil then
   begin
    ToLabel.Text := 'To '+EventBox.Items[0];
-   EventBox.SelectRange(EventBox.ItemByIndex(0),EventBox.ItemByIndex(0));
-   UpdateEventView;
-   TimeLabel.Text := IntToStr(SecondsBetween(now,StrToDateTime('22.03.2015')) div 3600)
-      + ' hours ' + IntToStr(SecondsBetween(now,StrToDateTime('22.03.2015')) mod 3600 div 60)
-      + ' minutes ' + IntToStr(SecondsBetween(now,StrToDateTime('22.03.2015')) mod 3600 mod 60)
+   EventBox.ItemIndex := 0;
+   TimeLabel.Text := IntToStr(SecondsBetween(now,StrToDateTime(StartTimeEdit.Text)) div 3600)
+      + ' hours ' + IntToStr(SecondsBetween(now,StrToDateTime(StartTimeEdit.Text)) mod 3600 div 60)
+      + ' minutes ' + IntToStr(SecondsBetween(now,StrToDateTime(StartTimeEdit.Text)) mod 3600 mod 60)
       + ' seconds';
   end;
 end;
@@ -259,7 +280,7 @@ begin
     GoogleClient.Get(RequestString,Response);
     //Response.SaveToFile('eventget.json');
     JsonObject := SO(Response.DataString);
-    SummaryLabel.Text := UTF8Decode(JsonObject.S['summary']);
+    SummaryLabel.Text := JsonObject.S['summary'];
     StartTimeEdit.Date := StrToDateTime(JsonObject.O['start'].S['date'],FormatSettings);
     EndTimeEdit.Date := StrToDate(JsonObject.O['end'].S['date'],FormatSettings);
     finally
@@ -268,6 +289,17 @@ begin
       except
       end;
     end;
+end;
+
+procedure TSCalendar.UpdateTimerTimer(Sender: TObject);
+begin
+  if EventBox.ItemByIndex(0) <> nil then
+  begin
+    try
+     UpdateEventView;
+    except
+    end;
+  end;
 end;
 
 procedure TSCalendar.UpdateCalendarMenu;
@@ -287,9 +319,8 @@ begin
     for I := 0 to JSONArray.Length-1 do
     begin
       CalendarInf := JSONArray.O[i];
-      CalendarList.Add(UTF8Decode(CalendarInf.S['summary'])+'='+
-        UTF8Decode(CalendarInf.S['id']));
-      CalendarBox.Items.Add(UTF8Decode(CalendarInf.S['summary']));
+      CalendarList.Add(CalendarInf.S['summary']+'='+CalendarInf.S['id']);
+      CalendarBox.Items.Add(CalendarInf.S['summary']);
     end;
     finally
       try
@@ -299,7 +330,41 @@ begin
     end;
 end;
 
-procedure TSCalendar.UpdateCalendarEvents;
+function BuildRequest(AFilter: Integer): String;
+var
+  LocalN: TDateTime;
+begin
+  LocalN := TTimeZone.Local.ToUniversalTime(now);
+  Result := 'https://www.googleapis.com/calendar/v3/calendars/'+
+      HttpEncode(CalendarList.Values[SCalendar.CalendarBox.Selected.Text])
+      +'/events?singleEvents=true&orderBy=startTime';
+  case AFilter of
+    0: Result := Result + '&timeMax=' + HttpEncode(
+      FormatDateTime('yyyy-MM-dd',TTimeZone.Local.ToUniversalTime(LocalN))
+      +'T16:00:00+00:00')+'&timeMin='+
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
+    1: Result := Result + '&timeMax=' + HttpEncode(
+      FormatDateTime('yyyy-MM-dd',TTimeZone.Local.ToUniversalTime(LocalN))
+      +'T23:59:59+00:00')+'&timeMin='+ HttpEncode(
+      FormatDateTime('yyyy-MM-dd',LocalN) + 'T16:00:00+00:00');
+    2: Result := Result + '&timeMax=' +
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+2)
+      +'T00:00:00+00:00')+'&timeMin='+
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+1) + 'T00:00:00+00:00');
+    3: Result := Result + '&timeMax=' +
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+5)
+      +'T00:00:00+00:00')+'&timeMin='+
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
+    4: Result := Result + '&timeMax=' +
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+30)
+      +'T00:00:00+00:00')+'&timeMin='+
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
+    5: Result := Result + '&timeMin=' +
+      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
+  end;
+end;
+
+procedure TSCalendar.UpdateCalendarEvents(AFilter: Integer);
 var
   Response: TStringStream;
   JSONArray: ISuperArray;
@@ -309,8 +374,8 @@ var
 begin
   Response := TStringStream.Create;
   try
-    RequestString := 'https://www.googleapis.com/calendar/v3/calendars/'+
-      HttpEncode(CalendarList.Values[CalendarBox.Selected.Text])+'/events?singleEvents=true&orderBy=startTime';
+    RequestString := BuildRequest(AFilter);
+    ShowMessage(RequestString);
     GoogleClient.Get(RequestString,Response);
     //Response.SaveToFile('eventlist.json');
     JsonObject := SO(Response.DataString);
@@ -320,10 +385,11 @@ begin
     for I := 0 to JSONArray.Length-1 do
     begin
       EventInf := JSONArray.O[i];
-      EventList.Add(UTF8Decode(EventInf.S['summary'])+'='+
-        UTF8Decode(EventInf.S['id']));
-      EventBox.Items.Add(UTF8Decode(EventInf.S['summary']));
+      EventList.Add(EventInf.S['summary']+'='+
+        EventInf.S['id']);
+      EventBox.Items.Add(EventInf.S['summary']);
     end;
+    //RearrangeEvents;
     finally
       try
         Response.Free;
@@ -334,8 +400,8 @@ end;
 
 procedure TSCalendar.UpEventsButtonClick(Sender: TObject);
 begin
-  if CalendarBox.Selected <> nil then
-    UpdateCalendarEvents;
+  if (CalendarBox.Selected <> nil) and (FilterBox.Selected <> nil) then
+    UpdateCalendarEvents(FilterBox.ItemIndex);
 end;
 
 procedure TSCalendar.WebBrowserShouldStartLoadWithRequest(ASender: TObject;
