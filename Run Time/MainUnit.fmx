@@ -195,6 +195,7 @@ object SCalendar: TSCalendar
     end
   end
   object ChCaPanel: TCalloutPanel
+    Touch.GestureManager = EventsManager
     Align = Top
     Padding.Top = 11.000000000000000000
     Size.Width = 290.000000000000000000
@@ -293,45 +294,50 @@ object SCalendar: TSCalendar
   end
   object TimePanel: TPanel
     Align = Bottom
-    Position.Y = 304.000000000000000000
+    Position.Y = 288.000000000000000000
     Size.Width = 290.000000000000000000
-    Size.Height = 145.000000000000000000
+    Size.Height = 161.000000000000000000
     Size.PlatformDefault = False
     Visible = False
     TabOrder = 62
     object ToLabel: TLabel
       Align = Top
+      AutoSize = True
+      EnableDragHighlight = False
       StyledSettings = [Family, FontColor]
       Margins.Top = 15.000000000000000000
       Margins.Bottom = 15.000000000000000000
       Position.Y = 15.000000000000000000
       Size.Width = 290.000000000000000000
-      Size.Height = 23.000000000000000000
+      Size.Height = 29.000000000000000000
       Size.PlatformDefault = False
       TextSettings.Font.Size = 24.000000000000000000
       TextSettings.Font.Style = [fsBold]
       TextSettings.HorzAlign = Center
+      TextSettings.WordWrap = False
       Text = 'To Name'
     end
     object LeftLabel: TLabel
       Align = Bottom
+      AutoSize = True
       StyledSettings = [Family, FontColor]
       Margins.Top = 15.000000000000000000
       Margins.Bottom = 15.000000000000000000
-      Position.Y = 107.000000000000000000
+      Position.Y = 117.000000000000000000
       Size.Width = 290.000000000000000000
-      Size.Height = 23.000000000000000000
+      Size.Height = 29.000000000000000000
       Size.PlatformDefault = False
       TextSettings.Font.Size = 24.000000000000000000
       TextSettings.Font.Style = [fsBold]
       TextSettings.HorzAlign = Center
+      TextSettings.WordWrap = False
       Text = 'Left'
     end
     object TimeLabel: TLabel
       Align = Client
       StyledSettings = [Family, Style, FontColor]
       Size.Width = 290.000000000000000000
-      Size.Height = 39.000000000000000000
+      Size.Height = 43.000000000000000000
       Size.PlatformDefault = False
       TextSettings.Font.Size = 28.000000000000000000
       TextSettings.HorzAlign = Center
@@ -380,6 +386,22 @@ object SCalendar: TSCalendar
           item
             GestureID = sgiDown
           end>
+      end
+      item
+        Control = ChCaPanel
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end
+          item
+            GestureID = sgiUp
+          end
+          item
+            GestureID = sgiDown
+          end>
       end>
   end
   object GeustureList: TActionList
@@ -401,5 +423,11 @@ object SCalendar: TSCalendar
       Text = 'DownTopPanning'
       OnExecute = DownTopPanningExecute
     end
+  end
+  object UpdateTimer: TTimer
+    Interval = 100
+    OnTimer = UpdateTimerTimer
+    Left = 40
+    Top = 176
   end
 end

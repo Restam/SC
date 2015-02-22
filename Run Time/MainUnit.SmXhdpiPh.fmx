@@ -70,6 +70,10 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
           item
             GestureID = sgiDown
           end>
+      end
+      item
+        Control = ChCaPanel
+        Collection = <>
       end>
   end
 end
