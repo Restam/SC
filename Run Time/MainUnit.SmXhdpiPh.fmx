@@ -32,9 +32,6 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
   end
   inherited ChCaPanel: TCalloutPanel
     Visible = False
-    inherited CalendarBox: TComboBox
-      Size.Height = 31.000000000000000000
-    end
   end
   inherited TimePanel: TPanel
     inherited ToLabel: TLabel
