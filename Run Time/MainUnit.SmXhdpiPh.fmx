@@ -31,7 +31,6 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
     end
   end
   inherited ChCaPanel: TCalloutPanel
-    Visible = False
     inherited CalendarBox: TComboBox
       Size.Height = 31.000000000000000000
     end
@@ -42,6 +41,9 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
       Position.X = 15.000000000000000000
       Size.Width = 275.000000000000000000
     end
+  end
+  inherited MenuPanel: TPanel
+    Size.Width = 250.000000000000000000
   end
   inherited EventsManager: TGestureManager
     GestureData = <

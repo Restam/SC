@@ -2,7 +2,7 @@ object SCalendar: TSCalendar
   Left = 0
   Top = 0
   Caption = 'School Calendar'
-  ClientHeight = 449
+  ClientHeight = 450
   ClientWidth = 290
   FormFactor.Width = 320
   FormFactor.Height = 480
@@ -24,7 +24,7 @@ object SCalendar: TSCalendar
     OnGesture = EventsControlGesture
     Align = Contents
     Size.Width = 290.000000000000000000
-    Size.Height = 449.000000000000000000
+    Size.Height = 450.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 27
     OnClick = MainPanelClick
@@ -32,7 +32,7 @@ object SCalendar: TSCalendar
       Align = Client
       StyledSettings = [Family, Style, FontColor]
       Size.Width = 290.000000000000000000
-      Size.Height = 251.000000000000000000
+      Size.Height = 252.000000000000000000
       Size.PlatformDefault = False
       TextSettings.Font.Size = 24.000000000000000000
       TextSettings.HorzAlign = Center
@@ -47,7 +47,7 @@ object SCalendar: TSCalendar
       Margins.Right = 15.000000000000000000
       Margins.Bottom = 5.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 278.000000000000000000
+      Position.Y = 279.000000000000000000
       Size.Width = 260.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -61,7 +61,7 @@ object SCalendar: TSCalendar
       Margins.Right = 15.000000000000000000
       Margins.Bottom = 5.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 337.000000000000000000
+      Position.Y = 338.000000000000000000
       Size.Width = 260.000000000000000000
       Size.Height = 32.000000000000000000
       Size.PlatformDefault = False
@@ -74,7 +74,7 @@ object SCalendar: TSCalendar
       Margins.Top = 5.000000000000000000
       Margins.Right = 15.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 256.000000000000000000
+      Position.Y = 257.000000000000000000
       Size.Width = 260.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
@@ -88,7 +88,7 @@ object SCalendar: TSCalendar
       Margins.Right = 15.000000000000000000
       Margins.Bottom = 5.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 315.000000000000000000
+      Position.Y = 316.000000000000000000
       Size.Width = 260.000000000000000000
       Size.Height = 17.000000000000000000
       Size.PlatformDefault = False
@@ -104,7 +104,7 @@ object SCalendar: TSCalendar
       Margins.Right = 15.000000000000000000
       Margins.Bottom = 15.000000000000000000
       Position.X = 15.000000000000000000
-      Position.Y = 384.000000000000000000
+      Position.Y = 385.000000000000000000
       Size.Width = 260.000000000000000000
       Size.Height = 50.000000000000000000
       Size.PlatformDefault = False
@@ -141,7 +141,7 @@ object SCalendar: TSCalendar
     Interval = 1800000
     OnTimer = RefreshTokenTimerTimer
     Left = 40
-    Top = 16
+    Top = 8
   end
   object MainMenu: TMainMenu
     Left = 40
@@ -184,9 +184,11 @@ object SCalendar: TSCalendar
     Touch.GestureManager = EventsManager
     Align = Top
     Padding.Top = 11.000000000000000000
+    Position.Y = 50.000000000000000000
     Size.Width = 290.000000000000000000
     Size.Height = 209.000000000000000000
     Size.PlatformDefault = False
+    Visible = False
     TabOrder = 38
     CalloutWidth = 23.000000000000000000
     CalloutLength = 11.000000000000000000
@@ -359,10 +361,55 @@ object SCalendar: TSCalendar
     Top = 64
   end
   object UpdateTimer: TTimer
-    Interval = 100
+    Interval = 300
     OnTimer = UpdateTimerTimer
     Left = 40
     Top = 176
+  end
+  object MenuPanel: TPanel
+    Align = MostTop
+    Size.Width = 290.000000000000000000
+    Size.Height = 48.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 79
+    object HelpButton: TSpeedButton
+      Align = Right
+      Position.X = 242.000000000000000000
+      Size.Width = 48.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'infotoolbutton'
+    end
+    object EventsSButton: TSpeedButton
+      Align = Right
+      Position.X = 112.000000000000000000
+      Size.Width = 64.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'toolbutton'
+      Text = 'Events'
+      OnClick = EventsSButtonClick
+    end
+    object TimerSButton: TSpeedButton
+      Align = Right
+      Position.X = 56.000000000000000000
+      Size.Width = 56.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'toolbutton'
+      Text = 'Timer'
+      OnClick = TimerSButtonClick
+    end
+    object CalendarSButton: TSpeedButton
+      Align = Right
+      Position.X = 176.000000000000000000
+      Size.Width = 66.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'toolbutton'
+      Text = 'Calendar'
+      OnClick = CalendarItemClick
+    end
   end
   object EventsManager: TGestureManager
     Left = 224

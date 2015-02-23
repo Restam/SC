@@ -54,6 +54,11 @@ type
     ToTimer: TTimer;
     UpdateTimer: TTimer;
     FilterBox: TComboBox;
+    HelpButton: TSpeedButton;
+    MenuPanel: TPanel;
+    EventsSButton: TSpeedButton;
+    TimerSButton: TSpeedButton;
+    CalendarSButton: TSpeedButton;
     procedure LeftRightPanningExecute(Sender: TObject);
     procedure RightLeftPanningExecute(Sender: TObject);
     procedure EventsControlGesture(Sender: TObject;
@@ -74,6 +79,8 @@ type
     procedure RefreshTokenTimerTimer(Sender: TObject);
     procedure ToTimerTimer(Sender: TObject);
     procedure UpdateTimerTimer(Sender: TObject);
+    procedure EventsSButtonClick(Sender: TObject);
+    procedure TimerSButtonClick(Sender: TObject);
   private
     { Private declarations }
     procedure UpdateCalendarMenu;
@@ -92,6 +99,10 @@ implementation
 
 {$R *.fmx}
 {$R *.SmXhdpiPh.fmx ANDROID}
+{$R *.NmXhdpiPh.fmx ANDROID}
+{$R *.LgXhdpiPh.fmx ANDROID}
+{$R *.LgXhdpiTb.fmx ANDROID}
+{$R *.XLgXhdpiTb.fmx ANDROID}
 
 procedure RearrangeEvents;
 var
@@ -116,9 +127,15 @@ end;
 procedure TSCalendar.CalendarItemClick(Sender: TObject);
 begin
   if not ChCaPanel.Visible then
-    ChCaPanel.Visible := True
+  begin
+    ChCaPanel.Visible := True;
+    ChCaPanel.BringToFront;
+  end
   else
+  begin
     ChCaPanel.Visible := False;
+    ChCaPanel.SendToBack;
+  end;
 end;
 
 procedure TSCalendar.DownTopPanningExecute(Sender: TObject);
@@ -155,6 +172,20 @@ begin
    if s = 'sgiRight' then RightLeftPanning.Execute;
    if s = 'sgiDown' then TopDownPanning.Execute;
    if s = 'sgiUp' then DownTopPanning.Execute;
+  end;
+end;
+
+procedure TSCalendar.EventsSButtonClick(Sender: TObject);
+begin
+  if not LeftPanel.Visible then
+  begin
+    LeftPanel.Visible := True;
+    LeftPanel.BringToFront;
+  end
+  else
+  begin
+    LeftPanel.Visible := False;
+    LeftPanel.SendToBack;
   end;
 end;
 
@@ -233,6 +264,20 @@ begin
  LeftPanel.Visible := True;;
 end;
 
+procedure TSCalendar.TimerSButtonClick(Sender: TObject);
+begin
+  if not TimePanel.Visible then
+  begin
+    TimePanel.Visible := True;
+    TimePanel.BringToFront;
+  end
+  else
+  begin
+    TimePanel.Visible := False;
+    TimePanel.SendToBack;
+  end;
+end;
+
 procedure TSCalendar.TopDownPanningExecute(Sender: TObject);
 begin
  if TimePanel.Visible then
@@ -250,10 +295,10 @@ end;
 
 procedure TSCalendar.ToTimerTimer(Sender: TObject);
 begin
-  if EventBox.ItemByIndex(0) <> nil then
+  if EventBox.Selected <> nil then
   begin
-   ToLabel.Text := 'To '+EventBox.Items[0];
-   EventBox.ItemIndex := 0;
+   ToLabel.Text := 'To '+EventBox.Selected.Text;
+   //EventBox.ItemIndex := 0;
    TimeLabel.Text := IntToStr(SecondsBetween(now,StrToDateTime(StartTimeEdit.Text)) div 3600)
       + ' hours ' + IntToStr(SecondsBetween(now,StrToDateTime(StartTimeEdit.Text)) mod 3600 div 60)
       + ' minutes ' + IntToStr(SecondsBetween(now,StrToDateTime(StartTimeEdit.Text)) mod 3600 mod 60)
