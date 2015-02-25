@@ -1,0 +1,78 @@
+{
+ "kind": "calendar#calendarList",
+ "etag": "\"1422040420149000\"",
+ "nextSyncToken": "00001422040420149000",
+ "items": [
+  {
+   "kind": "calendar#calendarListEntry",
+   "etag": "\"1421218511941000\"",
+   "id": "iiformally@gmail.com",
+   "summary": "e.ivkov@mail.ru",
+   "timeZone": "Europe/Moscow",
+   "colorId": "17",
+   "backgroundColor": "#9a9cff",
+   "foregroundColor": "#000000",
+   "selected": true,
+   "accessRole": "owner",
+   "defaultReminders": [
+    {
+     "method": "popup",
+     "minutes": 30
+    },
+    {
+     "method": "email",
+     "minutes": 30
+    }
+   ],
+   "notificationSettings": {
+    "notifications": [
+     {
+      "type": "eventCreation",
+      "method": "email"
+     },
+     {
+      "type": "eventChange",
+      "method": "email"
+     },
+     {
+      "type": "eventCancellation",
+      "method": "email"
+     },
+     {
+      "type": "eventResponse",
+      "method": "email"
+     }
+    ]
+   },
+   "primary": true
+  },
+  {
+   "kind": "calendar#calendarListEntry",
+   "etag": "\"1418034140372000\"",
+   "id": "#contacts@group.v.calendar.google.com",
+   "summary": "Дни рождения",
+   "description": "Отображает дни рождения ваших контактов и пользователей из ваших кругов Google+, а также юбилеи и другие значимые события из Google Контактов.",
+   "timeZone": "Europe/Moscow",
+   "colorId": "16",
+   "backgroundColor": "#4986e7",
+   "foregroundColor": "#000000",
+   "selected": true,
+   "accessRole": "reader",
+   "defaultReminders": []
+  },
+  {
+   "kind": "calendar#calendarListEntry",
+   "etag": "\"1389798607731000\"",
+   "id": "ru.russian#holiday@group.v.calendar.google.com",
+   "summary": "Праздники РФ",
+   "description": "Праздники и памятные даты Российской Федерации",
+   "timeZone": "Europe/Moscow",
+   "colorId": "11",
+   "backgroundColor": "#fbe983",
+   "foregroundColor": "#000000",
+   "selected": true,
+   "accessRole": "reader",
+   "defaultReminders": []
+  }
+ ]
+}

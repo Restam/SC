@@ -1,0 +1,5 @@
+FireMonkey Premium Style License
+
+License for Jet, Sterling, Diamond, Emerald Crystal, Emerald Dark, Coral Crystal and Coral Dark Style by Embarcadero Technologies for use with FireMonkey applications in Delphi XE7, C++ Builder XE7 and RAD Studio XE7
+ 
+Jet, Sterling, Diamond, Emerald Crystal, Emerald Dark, Coral Crystal and Coral Dark style files are (c) 2014 Embarcadero Technologies, Inc. These additional restrictions are in addition to the terms of the Software License and Support Agreement that accompanies RAD Studio. You may use and distribute the Jet, Sterling, Diamond, Emerald Crystal, Emerald Dark, Coral Crystal and Coral Dark style files solely as incorporated into the application you create. You may not make the style file sources or individual graphical elements accessible to your end users. You cannot resell or otherwise redistribute or make available standalone Jet, Sterling, Diamond, Emerald Crystal, Emerald Dark, Coral Crystal and Coral Dark style files (whether unmodified or modified). Some styles contain certain original design elements by MediaLoot.  

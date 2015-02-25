@@ -1,0 +1,15 @@
+program SchoolCalendar;
+
+uses
+  System.StartUpCopy,
+  FMX.Forms,
+  MainUnit in 'MainUnit.pas' {SCalendar},
+  superobject in '..\superobjectv1.2.4\superobject.pas';
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TSCalendar, SCalendar);
+  Application.Run;
+end.

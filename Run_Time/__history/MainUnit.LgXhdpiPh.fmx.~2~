@@ -1,0 +1,112 @@
+inherited SCalendar_LgXhdpiPh: TSCalendar_LgXhdpiPh
+  ClientHeight = 695
+  ClientWidth = 450
+  DesignerMasterStyle = 3
+  inherited MainPanel: TPanel
+    Size.Width = 450.000000000000000000
+    Size.Height = 695.000000000000000000
+    inherited SummaryLabel: TLabel
+      Size.Width = 450.000000000000000000
+      Size.Height = 497.000000000000000000
+    end
+    inherited StartTimeEdit: TDateEdit
+      Position.Y = 524.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited EndTimeEdit: TDateEdit
+      Position.Y = 583.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited StartTimeLabel: TLabel
+      Position.Y = 502.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited EndTimeLabel: TLabel
+      Position.Y = 561.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited EditSaveButton: TButton
+      Position.Y = 630.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+  end
+  inherited ChCaPanel: TCalloutPanel
+    Visible = False
+    inherited CalendarBox: TComboBox
+      Size.Height = 31.000000000000000000
+    end
+  end
+  inherited MenuPanel: TPanel
+    Size.Width = 450.000000000000000000
+    inherited HelpButton: TSpeedButton
+      Position.X = 402.000000000000000000
+    end
+    inherited EventsSButton: TSpeedButton
+      Position.X = 136.000000000000000000
+      Size.Width = 136.000000000000000000
+    end
+    inherited TimerSButton: TSpeedButton
+      Position.X = 16.000000000000000000
+      Size.Width = 120.000000000000000000
+    end
+    inherited CalendarSButton: TSpeedButton
+      Position.X = 272.000000000000000000
+      Size.Width = 130.000000000000000000
+    end
+  end
+  inherited StyleBook1: TStyleBook [12]
+  end
+  inherited EventsManager: TGestureManager [13]
+    GestureData = <
+      item
+        Control = MainPanel
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end
+          item
+            GestureID = sgiDown
+          end
+          item
+            GestureID = sgiUp
+          end>
+      end
+      item
+        Control = LeftPanel
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end
+          item
+            GestureID = sgiUp
+          end
+          item
+            GestureID = sgiDown
+          end>
+      end
+      item
+        Control = ChCaPanel
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end
+          item
+            GestureID = sgiUp
+          end
+          item
+            GestureID = sgiDown
+          end>
+      end>
+  end
+  inherited GeustureList: TActionList [14]
+  end
+end

@@ -3,10 +3,10 @@
         <ProjectGuid>{F2DA5BD3-143F-4CC1-ABE9-142B6DEF82B5}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="Run Time\SchoolCalendar.dproj">
+        <Projects Include="Run_Time\SchoolCalendar.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="Design Time\Diagrams.tgproj">
+        <Projects Include="Design_Time\Diagrams.tgproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -18,22 +18,22 @@
         </BorlandProject>
     </ProjectExtensions>
     <Target Name="SchoolCalendar">
-        <MSBuild Projects="Run Time\SchoolCalendar.dproj"/>
+        <MSBuild Projects="Run_Time\SchoolCalendar.dproj"/>
     </Target>
     <Target Name="SchoolCalendar:Clean">
-        <MSBuild Projects="Run Time\SchoolCalendar.dproj" Targets="Clean"/>
+        <MSBuild Projects="Run_Time\SchoolCalendar.dproj" Targets="Clean"/>
     </Target>
     <Target Name="SchoolCalendar:Make">
-        <MSBuild Projects="Run Time\SchoolCalendar.dproj" Targets="Make"/>
+        <MSBuild Projects="Run_Time\SchoolCalendar.dproj" Targets="Make"/>
     </Target>
     <Target Name="Diagrams">
-        <MSBuild Projects="Design Time\Diagrams.tgproj"/>
+        <MSBuild Projects="Design_Time\Diagrams.tgproj"/>
     </Target>
     <Target Name="Diagrams:Clean">
-        <MSBuild Projects="Design Time\Diagrams.tgproj" Targets="Clean"/>
+        <MSBuild Projects="Design_Time\Diagrams.tgproj" Targets="Clean"/>
     </Target>
     <Target Name="Diagrams:Make">
-        <MSBuild Projects="Design Time\Diagrams.tgproj" Targets="Make"/>
+        <MSBuild Projects="Design_Time\Diagrams.tgproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
         <CallTarget Targets="SchoolCalendar;Diagrams"/>
