@@ -1,0 +1,118 @@
+inherited SCalendar_LgXhdpiPh: TSCalendar_LgXhdpiPh
+  ClientHeight = 695
+  ClientWidth = 450
+  DesignerMasterStyle = 3
+  inherited MenuPanel: TPanel
+    Size.Width = 450.000000000000000000
+    inherited HelpButton: TSpeedButton
+      Position.X = 402.000000000000000000
+    end
+    inherited EventsSButton: TSpeedButton
+      Position.X = 136.000000000000000000
+      Size.Width = 136.000000000000000000
+    end
+    inherited TimerSButton: TSpeedButton
+      Position.X = 16.000000000000000000
+      Size.Width = 120.000000000000000000
+    end
+    inherited CalendarSButton: TSpeedButton
+      Position.X = 272.000000000000000000
+      Size.Width = 130.000000000000000000
+    end
+  end
+  inherited MainPanel: TPanel
+    Size.Width = 450.000000000000000000
+    Size.Height = 647.000000000000000000
+    inherited SummaryLabel: TLabel
+      Size.Width = 450.000000000000000000
+      Size.Height = 321.000000000000000000
+    end
+    inherited StartTimeEdit: TDateEdit
+      Position.Y = 476.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited EndTimeEdit: TDateEdit
+      Position.Y = 535.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited TeacherLabel: TLabel
+      Position.Y = 326.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited EndTimeLabel: TLabel
+      Position.Y = 513.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited EditSaveButton: TButton
+      Position.Y = 582.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited RoomLabel: TLabel
+      Position.Y = 390.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited StartTimeLabel: TLabel
+      Position.Y = 454.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited RoomEdit: TEdit
+      Position.Y = 412.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+    inherited TeacherEdit: TEdit
+      Position.Y = 348.000000000000000000
+      Size.Width = 420.000000000000000000
+    end
+  end
+  inherited EventsManager: TGestureManager
+    GestureData = <
+      item
+        Control = MainPanel
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end
+          item
+            GestureID = sgiDown
+          end
+          item
+            GestureID = sgiUp
+          end>
+      end
+      item
+        Control = LeftPanel
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end
+          item
+            GestureID = sgiUp
+          end
+          item
+            GestureID = sgiDown
+          end>
+      end
+      item
+        Control = ChCaPanel
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end
+          item
+            GestureID = sgiUp
+          end
+          item
+            GestureID = sgiDown
+          end>
+      end>
+  end
+end

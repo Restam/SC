@@ -31,34 +31,40 @@ type
     KeyEdit: TEdit;
     LeftPanel: TPanel;
     MainPanel: TPanel;
-    ChCaPanel: TCalloutPanel;
-    CalendarBox: TComboBox;
-    ChCaLabel: TLabel;
     CalendarItem: TMenuItem;
-    UpEventsButton: TButton;
     EventBox: TListBox;
     SummaryLabel: TLabel;
-    StartTimeEdit: TDateEdit;
-    EndTimeEdit: TDateEdit;
-    StartTimeLabel: TLabel;
+    TeacherLabel: TLabel;
     EndTimeLabel: TLabel;
     EditSaveButton: TButton;
     WebBrowser: TWebBrowser;
     TopDownPanning: TAction;
     DownTopPanning: TAction;
-    TimePanel: TPanel;
-    ToLabel: TLabel;
-    LeftLabel: TLabel;
-    TimeLabel: TLabel;
     ToTimer: TTimer;
     UpdateTimer: TTimer;
-    FilterBox: TComboBox;
     HelpButton: TSpeedButton;
     MenuPanel: TPanel;
     EventsSButton: TSpeedButton;
     TimerSButton: TSpeedButton;
     CalendarSButton: TSpeedButton;
     StyleBook1: TStyleBook;
+    RoomLabel: TLabel;
+    StartTimeLabel: TLabel;
+    RoomEdit: TEdit;
+    TeacherEdit: TEdit;
+    StartTimeEdit: TEdit;
+    EndTimeEdit: TEdit;
+    LeftLabel: TLabel;
+    TimeLabel: TLabel;
+    ToLabel: TLabel;
+    TimePanel: TPanel;
+    ShadowPanel: TPanel;
+    ChCaPanel: TPanel;
+    CalendarBox: TComboBox;
+    ChCaLabel: TLabel;
+    FilterBox: TComboBox;
+    UpEventsButton: TButton;
+    LessonPanel: TPanel;
     procedure LeftRightPanningExecute(Sender: TObject);
     procedure RightLeftPanningExecute(Sender: TObject);
     procedure EventsControlGesture(Sender: TObject;
@@ -81,11 +87,15 @@ type
     procedure UpdateTimerTimer(Sender: TObject);
     procedure EventsSButtonClick(Sender: TObject);
     procedure TimerSButtonClick(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   private
     { Private declarations }
     procedure UpdateCalendarMenu;
     procedure UpdateCalendarEvents(AFilter: Integer);
     procedure UpdateEventView;
+    procedure EventCheckDescription(AEventDescription: String);
+    procedure ShowTimer(ShowState: Boolean);
+    procedure ShowChCaPanel(ShowState: Boolean);
   public
     { Public declarations }
   end;
@@ -95,6 +105,7 @@ type
 var
   SCalendar: TSCalendar;
   CalendarList, EventList: TStringList;
+  FormatSettings: TFormatSettings;
 implementation
 
 {$R *.fmx}
@@ -127,20 +138,14 @@ end;
 procedure TSCalendar.CalendarItemClick(Sender: TObject);
 begin
   if not ChCaPanel.Visible then
-  begin
-    ChCaPanel.Visible := True;
-    ChCaPanel.BringToFront;
-  end
+    ShowChCaPanel(True)
   else
-  begin
-    ChCaPanel.Visible := False;
-    ChCaPanel.SendToBack;
-  end;
+    ShowChCaPanel(False)
 end;
 
 procedure TSCalendar.DownTopPanningExecute(Sender: TObject);
 begin
-  if ChCaPanel.Visible then
+  {if ChCaPanel.Visible then
   begin
     ChCaPanel.Visible := False;
     ChCaPanel.SendToBack;
@@ -150,7 +155,7 @@ begin
     ToTimer.Enabled := True;
     TimePanel.Visible := True;
     TimePanel.BringToFront;
-  end;
+  end; }
 end;
 
 procedure TSCalendar.EventBoxClick(Sender: TObject);
@@ -159,6 +164,24 @@ begin
     UpdateEventView;
   except
   end;
+end;
+
+procedure TSCalendar.EventCheckDescription(AEventDescription: String);
+var
+  stpos: Integer;
+  JsonObject: ISuperObject;
+begin
+  if AEventDescription.Contains('#lesson') then
+    begin
+      stpos := AEventDescription.IndexOfAny('#lesson'.ToCharArray);
+      AEventDescription := AEventDescription.Remove(stpos,'#lesson'.Length);
+      JsonObject := SO(AEventDescription);
+      TeacherEdit.Text := JsonObject.S['teacher'];
+      RoomEdit.Text := JsonObject.S['room'];
+      LessonPanel.Visible := True;
+    end
+  else
+    LessonPanel.Visible := False;
 end;
 
 procedure TSCalendar.EventsControlGesture(Sender: TObject;
@@ -201,6 +224,10 @@ begin
   EventList := TStringList.Create;
   //LoginPanel.Visible := True;
   LoginClick(Self);
+  FormatSettings.ShortDateFormat := 'yyyy-MM-dd';
+  FormatSettings.DateSeparator := '-';
+  FormatSettings.LongTimeFormat := 'HH:mm:ss';
+  FormatSettings.TimeSeparator := ':';
 end;
 
 procedure TSCalendar.FormDestroy(Sender: TObject);
@@ -211,7 +238,8 @@ end;
 
 procedure TSCalendar.LeftRightPanningExecute(Sender: TObject);
 begin
-  LeftPanel.Visible := False;
+  if EventBox.ItemIndex > 0 then
+   EventBox.ItemIndex := EventBox.ItemIndex - 1;
 end;
 
 procedure TSCalendar.LoginClick(Sender: TObject);
@@ -261,26 +289,51 @@ end;
 
 procedure TSCalendar.RightLeftPanningExecute(Sender: TObject);
 begin
- LeftPanel.Visible := True;;
+ if EventBox.ItemIndex < (EventBox.Count - 1) then
+   EventBox.ItemIndex := EventBox.ItemIndex + 1;
+end;
+
+procedure TSCalendar.ShowChCaPanel(ShowState: Boolean);
+begin
+  if ShowState then
+    begin
+      ShadowPanel.Visible := True;
+      ChCaPanel.Visible := True;
+    end
+  else
+    begin
+      ShadowPanel.Visible := False;
+      ChCaPanel.Visible := False;
+    end;
+end;
+
+procedure TSCalendar.ShowTimer(ShowState: Boolean);
+begin
+  if ShowState then
+    begin
+      ShadowPanel.Visible := True;
+      TimePanel.Visible := True;
+      ToTimer.Enabled := True;
+    end
+  else
+    begin
+      ShadowPanel.Visible := False;
+      TimePanel.Visible := False;
+      ToTimer.Enabled := False;
+    end;
 end;
 
 procedure TSCalendar.TimerSButtonClick(Sender: TObject);
 begin
   if not TimePanel.Visible then
-  begin
-    TimePanel.Visible := True;
-    TimePanel.BringToFront;
-  end
+    ShowTimer(True)
   else
-  begin
-    TimePanel.Visible := False;
-    TimePanel.SendToBack;
-  end;
+    ShowTimer(False);
 end;
 
 procedure TSCalendar.TopDownPanningExecute(Sender: TObject);
 begin
- if TimePanel.Visible then
+ {if TimePanel.Visible then
  begin
   TimePanel.Visible := False;
   ToTimer.Enabled := False;
@@ -290,7 +343,7 @@ begin
  begin
   ChCaPanel.Visible := True;
   ChCaPanel.BringToFront;
- end;
+ end;}
 end;
 
 procedure TSCalendar.ToTimerTimer(Sender: TObject);
@@ -299,9 +352,12 @@ begin
   begin
    ToLabel.Text := 'To '+EventBox.Selected.Text;
    //EventBox.ItemIndex := 0;
-   TimeLabel.Text := IntToStr(SecondsBetween(now,StrToDateTime(StartTimeEdit.Text)) div 3600)
-      + ' hours ' + IntToStr(SecondsBetween(now,StrToDateTime(StartTimeEdit.Text)) mod 3600 div 60)
-      + ' minutes ' + IntToStr(SecondsBetween(now,StrToDateTime(StartTimeEdit.Text)) mod 3600 mod 60)
+   TimeLabel.Text := IntToStr(SecondsBetween(now,
+   StrToDateTime(StartTimeEdit.Text, FormatSettings)) div 3600)
+      + ' hours ' + IntToStr(SecondsBetween(now,
+      StrToDateTime(StartTimeEdit.Text, FormatSettings)) mod 3600 div 60)
+      + ' minutes ' + IntToStr(SecondsBetween(now,
+      StrToDateTime(StartTimeEdit.Text, FormatSettings)) mod 3600 mod 60)
       + ' seconds';
   end;
 end;
@@ -311,23 +367,19 @@ var
   Response: TStringStream;
   JsonObject: ISuperObject;
   RequestString: String;
-  FormatSettings: TFormatSettings;
 begin
   Response := TStringStream.Create;
-  FormatSettings.ShortDateFormat := 'yyyy-mm-dd';
-  FormatSettings.DateSeparator := '-';
-  FormatSettings.LongTimeFormat := 'hh:nn:ss';
-  FormatSettings.TimeSeparator := ':';
   try
     RequestString := 'https://www.googleapis.com/calendar/v3/calendars/'+
       HttpEncode(CalendarList.Values[CalendarBox.Selected.Text])+'/events/'+
-      HttpEncode(EventList.Values[EventBox.Selected.Text]);
+      HttpEncode(EventList.ValueFromIndex[EventBox.ItemIndex]);
     GoogleClient.Get(RequestString,Response);
     //Response.SaveToFile('eventget.json');
     JsonObject := SO(Response.DataString);
     SummaryLabel.Text := JsonObject.S['summary'];
-    StartTimeEdit.Date := StrToDateTime(JsonObject.O['start'].S['date'],FormatSettings);
-    EndTimeEdit.Date := StrToDate(JsonObject.O['end'].S['date'],FormatSettings);
+    StartTimeEdit.Text := JsonObject.O['start'].S['dateTime'];
+    EndTimeEdit.Text := JsonObject.O['end'].S['dateTime'];
+    EventCheckDescription(JsonObject.S['description']);
     finally
       try
         Response.Free;
@@ -338,7 +390,7 @@ end;
 
 procedure TSCalendar.UpdateTimerTimer(Sender: TObject);
 begin
-  if EventBox.ItemByIndex(0) <> nil then
+  if EventBox.Count > 0 then
   begin
     try
      UpdateEventView;
@@ -446,7 +498,10 @@ end;
 procedure TSCalendar.UpEventsButtonClick(Sender: TObject);
 begin
   if (CalendarBox.Selected <> nil) and (FilterBox.Selected <> nil) then
+  begin
     UpdateCalendarEvents(FilterBox.ItemIndex);
+    ShowChCaPanel(False);
+  end;
 end;
 
 procedure TSCalendar.WebBrowserShouldStartLoadWithRequest(ASender: TObject;
@@ -463,7 +518,7 @@ begin
       //ShowMessage(DateToStr(GoogleClient.TokenInfo.ExpiresTime));
       Login.Enabled := False;
       WebBrowser.Visible := False;
-      ChCaPanel.Visible:=True;
+      ShowChCaPanel(True);
       UpdateCalendarMenu;
       LoginPanel.Visible:=False;
     except
@@ -471,5 +526,21 @@ begin
   end;
 end;
 
+
+procedure TSCalendar.FormResize(Sender: TObject);
+begin
+  if ClientWidth > 450 then
+    begin
+      EventsSButton.Visible := False;
+      MainPanel.Align := TAlignLayout.Client;
+      LeftPanel.Visible := True;
+    end
+  else
+    begin
+      EventsSButton.Visible := True;
+      MainPanel.Align := TAlignLayout.Contents;
+      LeftPanel.Visible := False;
+    end;
+end;
 
 end.

@@ -22,63 +22,81 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
     Size.Height = 327.000000000000000000
     inherited SummaryLabel: TLabel
       Size.Width = 250.000000000000000000
-      Size.Height = 129.000000000000000000
-    end
-    inherited StartTimeEdit: TDateEdit
-      Position.Y = 156.000000000000000000
-      Size.Width = 220.000000000000000000
-    end
-    inherited EndTimeEdit: TDateEdit
-      Position.Y = 215.000000000000000000
-      Size.Width = 220.000000000000000000
-    end
-    inherited StartTimeLabel: TLabel
-      Position.Y = 134.000000000000000000
-      Size.Width = 220.000000000000000000
+      Size.Height = 45.000000000000000000
     end
     inherited EndTimeLabel: TLabel
-      Position.Y = 193.000000000000000000
+      Position.Y = 221.000000000000000000
       Size.Width = 220.000000000000000000
     end
     inherited EditSaveButton: TButton
-      Position.Y = 262.000000000000000000
+      Position.Y = 280.000000000000000000
+      Size.Width = 220.000000000000000000
+      Size.Height = 32.000000000000000000
+    end
+    inherited StartTimeLabel: TLabel
+      Position.Y = 172.000000000000000000
       Size.Width = 220.000000000000000000
     end
-  end
-  inherited GoogleClient: TOAuthClient
-    Left = 24
-    Top = 48
-  end
-  inherited RefreshTokenTimer: TTimer
-    Left = 16
-    Top = 96
-  end
-  inherited MainMenu: TMainMenu
-    Left = 24
-    Top = 144
-  end
-  inherited TimePanel: TPanel
-    inherited ToLabel: TLabel
-      Margins.Left = 15.000000000000000000
-      Position.X = 15.000000000000000000
-      Size.Width = 275.000000000000000000
+    inherited StartTimeEdit: TEdit
+      Position.Y = 189.000000000000000000
+      Size.Width = 220.000000000000000000
+    end
+    inherited EndTimeEdit: TEdit
+      Position.Y = 238.000000000000000000
+      Size.Width = 220.000000000000000000
+    end
+    inherited LessonPanel: TPanel
+      Position.Y = 45.000000000000000000
+      Size.Width = 250.000000000000000000
+      inherited RoomEdit: TEdit
+        Size.Width = 220.000000000000000000
+      end
+      inherited RoomLabel: TLabel
+        Size.Width = 220.000000000000000000
+      end
+      inherited TeacherEdit: TEdit
+        Size.Width = 220.000000000000000000
+      end
+      inherited TeacherLabel: TLabel
+        Size.Width = 220.000000000000000000
+      end
     end
   end
-  inherited ToTimer: TTimer
-    Left = 96
-    Top = 48
-  end
-  inherited UpdateTimer: TTimer
-    Left = 160
-    Top = 48
-  end
-  inherited StyleBook1: TStyleBook
-    Left = 200
-    Top = 88
+  inherited ShadowPanel: TPanel
+    Size.Width = 250.000000000000000000
+    Size.Height = 327.000000000000000000
+    inherited TimePanel: TPanel
+      Position.Y = 63.000000000000000000
+      Size.Width = 250.000000000000000000
+      inherited LeftLabel: TLabel
+        Size.Width = 250.000000000000000000
+      end
+      inherited TimeLabel: TLabel
+        Size.Width = 250.000000000000000000
+      end
+      inherited ToLabel: TLabel
+        Size.Width = 250.000000000000000000
+      end
+    end
+    inherited ChCaPanel: TPanel
+      Align = VertCenter
+      Position.Y = 63.000000000000000000
+      Size.Width = 250.000000000000000000
+      inherited CalendarBox: TComboBox
+        Size.Width = 230.000000000000000000
+      end
+      inherited ChCaLabel: TLabel
+        Size.Width = 230.000000000000000000
+      end
+      inherited FilterBox: TComboBox
+        Size.Width = 230.000000000000000000
+      end
+      inherited UpEventsButton: TButton
+        Size.Width = 230.000000000000000000
+      end
+    end
   end
   inherited EventsManager: TGestureManager
-    Left = 112
-    Top = 144
     GestureData = <
       item
         Control = MainPanel
@@ -111,14 +129,6 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
           item
             GestureID = sgiDown
           end>
-      end
-      item
-        Control = ChCaPanel
-        Collection = <>
       end>
-  end
-  inherited GeustureList: TActionList
-    Left = 200
-    Top = 144
   end
 end
