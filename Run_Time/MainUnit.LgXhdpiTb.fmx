@@ -90,14 +90,35 @@ inherited SCalendar_LgXhdpiTb: TSCalendar_LgXhdpiTb
       end
     end
   end
+  inherited LeftPanel: TPanel
+    Align = FitLeft
+  end
   inherited StyleBook1: TStyleBook
     Left = 376
     Top = 120
   end
   inherited ShadowPanel: TPanel
+    Size.Width = 480.000000000000000000
+    Size.Height = 781.000000000000000000
     inherited TimePanel: TPanel
       Position.X = 140.000000000000000000
       Position.Y = 290.000000000000000000
+    end
+    inherited ChCaPanel: TPanel
+      Size.Width = 250.000000000000000000
+      inherited CalendarBox: TComboBox
+        Size.Width = 230.000000000000000000
+        Size.Height = 32.000000000000000000
+      end
+      inherited ChCaLabel: TLabel
+        Size.Width = 230.000000000000000000
+      end
+      inherited FilterBox: TComboBox
+        Size.Width = 230.000000000000000000
+      end
+      inherited UpEventsButton: TButton
+        Size.Width = 230.000000000000000000
+      end
     end
   end
   inherited EventsManager: TGestureManager

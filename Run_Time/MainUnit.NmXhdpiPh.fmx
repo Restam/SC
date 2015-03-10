@@ -54,11 +54,13 @@ inherited SCalendar_NmXhdpiPh: TSCalendar_NmXhdpiPh
       TextSettings.Font.Size = 18.000000000000000000
       Position.Y = 386.000000000000000000
       Size.Width = 370.000000000000000000
+      StyledSettings = [Family, Style, FontColor]
     end
     inherited EndTimeEdit: TEdit
       TextSettings.Font.Size = 18.000000000000000000
       Position.Y = 455.000000000000000000
       Size.Width = 370.000000000000000000
+      StyledSettings = [Family, Style, FontColor]
     end
     inherited LessonPanel: TPanel
       Position.Y = 227.000000000000000000
@@ -67,6 +69,7 @@ inherited SCalendar_NmXhdpiPh: TSCalendar_NmXhdpiPh
         TextSettings.Font.Size = 18.000000000000000000
         Position.Y = 21.000000000000000000
         Size.Width = 370.000000000000000000
+        StyledSettings = [Family, Style, FontColor]
       end
       inherited RoomLabel: TLabel
         Position.Y = -6.000000000000000000
@@ -77,6 +80,7 @@ inherited SCalendar_NmXhdpiPh: TSCalendar_NmXhdpiPh
       inherited TeacherEdit: TEdit
         TextSettings.Font.Size = 18.000000000000000000
         Size.Width = 370.000000000000000000
+        StyledSettings = [Family, Style, FontColor]
       end
       inherited TeacherLabel: TLabel
         Position.Y = 63.000000000000000000
@@ -89,6 +93,14 @@ inherited SCalendar_NmXhdpiPh: TSCalendar_NmXhdpiPh
   inherited RefreshTokenTimer: TTimer
     Left = 128
     Top = 64
+  end
+  inherited LeftPanel: TPanel
+    Size.Width = 264.354064941406300000
+    Size.Height = 615.000000000000000000
+    inherited EventBox: TListBox
+      Size.Width = 264.354064941406300000
+      Size.Height = 615.000000000000000000
+    end
   end
   inherited ShadowPanel: TPanel
     Size.Width = 400.000000000000000000
@@ -107,21 +119,22 @@ inherited SCalendar_NmXhdpiPh: TSCalendar_NmXhdpiPh
       end
     end
     inherited ChCaPanel: TPanel
-      Size.Width = 358.000000000000000000
+      Size.Width = 250.000000000000000000
       Size.Height = 199.000000000000000000
       inherited CalendarBox: TComboBox
-        Size.Width = 338.000000000000000000
+        Size.Width = 230.000000000000000000
+        Size.Height = 32.000000000000000000
       end
       inherited ChCaLabel: TLabel
-        Size.Width = 338.000000000000000000
+        Size.Width = 230.000000000000000000
       end
       inherited FilterBox: TComboBox
         Position.Y = 97.000000000000000000
-        Size.Width = 338.000000000000000000
+        Size.Width = 230.000000000000000000
       end
       inherited UpEventsButton: TButton
         Position.Y = 139.000000000000000000
-        Size.Width = 338.000000000000000000
+        Size.Width = 230.000000000000000000
       end
     end
   end

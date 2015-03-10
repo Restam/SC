@@ -22,7 +22,7 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
     Size.Height = 327.000000000000000000
     inherited SummaryLabel: TLabel
       Size.Width = 250.000000000000000000
-      Size.Height = 45.000000000000000000
+      Size.Height = 64.000000000000000000
     end
     inherited EndTimeLabel: TLabel
       Position.Y = 221.000000000000000000
@@ -46,20 +46,33 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
       Size.Width = 220.000000000000000000
     end
     inherited LessonPanel: TPanel
-      Position.Y = 45.000000000000000000
+      Position.Y = 64.000000000000000000
       Size.Width = 250.000000000000000000
+      Size.Height = 108.000000000000000000
       inherited RoomEdit: TEdit
+        Position.Y = 27.000000000000000000
         Size.Width = 220.000000000000000000
       end
       inherited RoomLabel: TLabel
+        Position.Y = 10.000000000000000000
         Size.Width = 220.000000000000000000
       end
       inherited TeacherEdit: TEdit
+        Position.Y = 76.000000000000000000
         Size.Width = 220.000000000000000000
       end
       inherited TeacherLabel: TLabel
+        Position.Y = 59.000000000000000000
         Size.Width = 220.000000000000000000
       end
+    end
+  end
+  inherited LeftPanel: TPanel
+    Size.Width = 160.000000000000000000
+    Size.Height = 375.000000000000000000
+    inherited EventBox: TListBox
+      Size.Width = 160.000000000000000000
+      Size.Height = 375.000000000000000000
     end
   end
   inherited ShadowPanel: TPanel
@@ -84,6 +97,7 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
       Size.Width = 250.000000000000000000
       inherited CalendarBox: TComboBox
         Size.Width = 230.000000000000000000
+        Size.Height = 32.000000000000000000
       end
       inherited ChCaLabel: TLabel
         Size.Width = 230.000000000000000000

@@ -7,11 +7,11 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, Google.OAuth, HttpApp,DateUtils,
   FMX.StdCtrls, System.Actions, FMX.ActnList, FMX.Menus, FMX.Layouts, XSuperJson, XSuperObject,
   FMX.Gestures, FMX.Controls.Presentation, FMX.Edit, FMX.ListBox,
-  FMX.DateTimeCtrls
+  FMX.DateTimeCtrls, System.IOUtils, FMX.WebBrowser
   {$IFDEF WIN32}
-    ,ShellApi, Windows, FMX.Calendar, FMX.WebBrowser;
+    ,ShellApi, Windows, FMX.Calendar;
   {$ElSE}
-    ,FMX.Calendar, FMX.WebBrowser;
+    ,FMX.Calendar;
   {$ENDIF}
 
 type
@@ -106,6 +106,7 @@ var
   SCalendar: TSCalendar;
   CalendarList, EventList: TStringList;
   FormatSettings: TFormatSettings;
+  GAccess: String;
 implementation
 
 {$R *.fmx}
@@ -219,7 +220,10 @@ end;
 
 procedure TSCalendar.FormCreate(Sender: TObject);
 begin
-  //GoogleClient.LoadFromFile('access.tmp');
+  GAccess := System.IOUtils.TPath.Combine(
+  System.IOUtils.tpath.getdocumentspath,'access.tmp');
+  if FileExists(GAccess) then
+    GoogleClient.LoadFromFile(GAccess);
   CalendarList := TStringList.Create;
   EventList := TStringList.Create;
   //LoginPanel.Visible := True;
@@ -297,6 +301,7 @@ procedure TSCalendar.ShowChCaPanel(ShowState: Boolean);
 begin
   if ShowState then
     begin
+      TimePanel.Visible := False;
       ShadowPanel.Visible := True;
       ChCaPanel.Visible := True;
     end
@@ -311,6 +316,7 @@ procedure TSCalendar.ShowTimer(ShowState: Boolean);
 begin
   if ShowState then
     begin
+      ChCaPanel.Visible := False;
       ShadowPanel.Visible := True;
       TimePanel.Visible := True;
       ToTimer.Enabled := True;
@@ -521,6 +527,7 @@ begin
       ShowChCaPanel(True);
       UpdateCalendarMenu;
       LoginPanel.Visible:=False;
+      GoogleClient.SaveToFile(GAccess);
     except
     end;
   end;
