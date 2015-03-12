@@ -110,7 +110,6 @@ inherited SCalendar_LgXhdpiPh: TSCalendar_LgXhdpiPh
       Size.Width = 250.000000000000000000
       inherited CalendarBox: TComboBox
         Size.Width = 230.000000000000000000
-        Size.Height = 32.000000000000000000
       end
       inherited ChCaLabel: TLabel
         Size.Width = 230.000000000000000000

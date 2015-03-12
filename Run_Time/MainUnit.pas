@@ -139,7 +139,10 @@ end;
 procedure TSCalendar.CalendarItemClick(Sender: TObject);
 begin
   if not ChCaPanel.Visible then
-    ShowChCaPanel(True)
+  begin
+    ShowChCaPanel(True);
+    UpdateCalendarMenu;
+  end
   else
     ShowChCaPanel(False)
 end;
@@ -223,11 +226,19 @@ begin
   GAccess := System.IOUtils.TPath.Combine(
   System.IOUtils.tpath.getdocumentspath,'access.tmp');
   if FileExists(GAccess) then
+  begin
     GoogleClient.LoadFromFile(GAccess);
+    try
+      GoogleClient.RefreshToken;
+    except
+      LoginClick(Self);
+    end;
+  end
+  else
+    LoginClick(Self);
   CalendarList := TStringList.Create;
   EventList := TStringList.Create;
   //LoginPanel.Visible := True;
-  LoginClick(Self);
   FormatSettings.ShortDateFormat := 'yyyy-MM-dd';
   FormatSettings.DateSeparator := '-';
   FormatSettings.LongTimeFormat := 'HH:mm:ss';
@@ -528,6 +539,7 @@ begin
       UpdateCalendarMenu;
       LoginPanel.Visible:=False;
       GoogleClient.SaveToFile(GAccess);
+      ShowMessage('Saved in '+GAccess);
     except
     end;
   end;
