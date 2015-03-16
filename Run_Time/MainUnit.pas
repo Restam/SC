@@ -7,12 +7,8 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, Google.OAuth, HttpApp,DateUtils,
   FMX.StdCtrls, System.Actions, FMX.ActnList, FMX.Menus, FMX.Layouts, XSuperJson, XSuperObject,
   FMX.Gestures, FMX.Controls.Presentation, FMX.Edit, FMX.ListBox,
-  FMX.DateTimeCtrls, System.IOUtils, FMX.WebBrowser
-  {$IFDEF WIN32}
-    ,ShellApi, Windows, FMX.Calendar;
-  {$ElSE}
-    ,FMX.Calendar;
-  {$ENDIF}
+  FMX.DateTimeCtrls, System.IOUtils, FMX.WebBrowser, FMX.Calendar, FMX.ListView.Types,
+  FMX.ListView, FMX.Objects;
 
 type
   TSCalendar = class(TForm)
@@ -25,11 +21,7 @@ type
     GeustureList: TActionList;
     LeftRightPanning: TAction;
     RightLeftPanning: TAction;
-    LoginPanel: TCalloutPanel;
-    Login: TButton;
-    RememberMeBox: TCheckBox;
-    KeyEdit: TEdit;
-    LeftPanel: TPanel;
+    EventsPanel: TPanel;
     MainPanel: TPanel;
     CalendarItem: TMenuItem;
     EventBox: TListBox;
@@ -41,12 +33,7 @@ type
     TopDownPanning: TAction;
     DownTopPanning: TAction;
     ToTimer: TTimer;
-    UpdateTimer: TTimer;
-    HelpButton: TSpeedButton;
     MenuPanel: TPanel;
-    EventsSButton: TSpeedButton;
-    TimerSButton: TSpeedButton;
-    CalendarSButton: TSpeedButton;
     StyleBook1: TStyleBook;
     RoomLabel: TLabel;
     StartTimeLabel: TLabel;
@@ -59,25 +46,27 @@ type
     ToLabel: TLabel;
     TimePanel: TPanel;
     ShadowPanel: TPanel;
-    ChCaPanel: TPanel;
+    OptionPanel: TPanel;
     CalendarBox: TComboBox;
-    ChCaLabel: TLabel;
     FilterBox: TComboBox;
-    UpEventsButton: TButton;
+    OkButton: TButton;
     LessonPanel: TPanel;
+    OptionsButton: TSpeedButton;
+    TimeButton: TSpeedButton;
+    Image1: TImage;
+    ChooseCalendarLabel: TLabel;
+    TimetableDateEdit: TDateEdit;
+    Panel1: TPanel;
+    ReloadButton: TSpeedButton;
     procedure LeftRightPanningExecute(Sender: TObject);
     procedure RightLeftPanningExecute(Sender: TObject);
     procedure EventsControlGesture(Sender: TObject;
       const EventInfo: TGestureEventInfo; var Handled: Boolean);
-    procedure LoginClick(Sender: TObject);
-    procedure AccountItemClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
-    procedure CalendarItemClick(Sender: TObject);
     procedure MainPanelClick(Sender: TObject);
-    procedure UpEventsButtonClick(Sender: TObject);
+    procedure OkButtonClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
-    procedure EventBoxClick(Sender: TObject);
     procedure TopDownPanningExecute(Sender: TObject);
     procedure DownTopPanningExecute(Sender: TObject);
     procedure WebBrowserShouldStartLoadWithRequest(ASender: TObject;
@@ -85,28 +74,37 @@ type
     procedure RefreshTokenTimerTimer(Sender: TObject);
     procedure ToTimerTimer(Sender: TObject);
     procedure UpdateTimerTimer(Sender: TObject);
-    procedure EventsSButtonClick(Sender: TObject);
     procedure TimerSButtonClick(Sender: TObject);
-    procedure FormResize(Sender: TObject);
+    procedure Image1Click(Sender: TObject);
+    procedure EditSaveButtonClick(Sender: TObject);
+    procedure OptionsButtonClick(Sender: TObject);
+    procedure TimetableDateEditClosePicker(Sender: TObject);
+    procedure FilterBoxClosePopup(Sender: TObject);
+    procedure EventBoxItemClick(const Sender: TCustomListBox;
+      const Item: TListBoxItem);
+    procedure ReloadButtonClick(Sender: TObject);
   private
     { Private declarations }
     procedure UpdateCalendarMenu;
-    procedure UpdateCalendarEvents(AFilter: Integer);
+    procedure UpdateCalendarEvents(AFilter: Integer; ADay: TDate);
     procedure UpdateEventView;
     procedure EventCheckDescription(AEventDescription: String);
     procedure ShowTimer(ShowState: Boolean);
-    procedure ShowChCaPanel(ShowState: Boolean);
+    procedure ShowOptionPanel(ShowState: Boolean);
+    procedure ShowEventsPanel(ShowState: Boolean);
+    procedure StartCalendarConnection;
+    procedure InitOptions;
   public
     { Public declarations }
   end;
     //function EncodeURIComponent(const ASrc: string): UTF8String;
     procedure RearrangeEvents;
-    function BuildRequest(AFilter: Integer): String;
+    function BuildRequest(AFilter: Integer; ADay: TDate): String;
 var
   SCalendar: TSCalendar;
-  CalendarList, EventList: TStringList;
+  CalendarList, EventList, OptionList: TStringList;
   FormatSettings: TFormatSettings;
-  GAccess: String;
+  GAccess, GOptions: String;
 implementation
 
 {$R *.fmx}
@@ -128,25 +126,6 @@ begin
   end;
 end;
 
-procedure TSCalendar.AccountItemClick(Sender: TObject);
-begin
-  if not LoginPanel.Visible then
-    LoginPanel.Visible := True
-  else
-    LoginPanel.Visible := False;
-end;
-
-procedure TSCalendar.CalendarItemClick(Sender: TObject);
-begin
-  if not ChCaPanel.Visible then
-  begin
-    ShowChCaPanel(True);
-    UpdateCalendarMenu;
-  end
-  else
-    ShowChCaPanel(False)
-end;
-
 procedure TSCalendar.DownTopPanningExecute(Sender: TObject);
 begin
   {if ChCaPanel.Visible then
@@ -162,12 +141,16 @@ begin
   end; }
 end;
 
-procedure TSCalendar.EventBoxClick(Sender: TObject);
+procedure TSCalendar.EditSaveButtonClick(Sender: TObject);
 begin
-  try
-    UpdateEventView;
-  except
-  end;
+  ShowEventsPanel(True);
+end;
+
+procedure TSCalendar.EventBoxItemClick(const Sender: TCustomListBox;
+  const Item: TListBoxItem);
+begin
+  UpdateEventView;
+  ShowEventsPanel(False);
 end;
 
 procedure TSCalendar.EventCheckDescription(AEventDescription: String);
@@ -200,20 +183,13 @@ begin
    if s = 'sgiDown' then TopDownPanning.Execute;
    if s = 'sgiUp' then DownTopPanning.Execute;
   end;
+  UpdateEventView;
 end;
 
-procedure TSCalendar.EventsSButtonClick(Sender: TObject);
+procedure TSCalendar.FilterBoxClosePopup(Sender: TObject);
 begin
-  if not LeftPanel.Visible then
-  begin
-    LeftPanel.Visible := True;
-    LeftPanel.BringToFront;
-  end
-  else
-  begin
-    LeftPanel.Visible := False;
-    LeftPanel.SendToBack;
-  end;
+  if (TimetableDateEdit.Text <> '') and (FilterBox.ItemIndex > -1) then
+    UpdateCalendarEvents(FilterBox.ItemIndex,TimetableDateEdit.Date);
 end;
 
 procedure TSCalendar.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -224,18 +200,20 @@ end;
 procedure TSCalendar.FormCreate(Sender: TObject);
 begin
   GAccess := System.IOUtils.TPath.Combine(
-  System.IOUtils.tpath.getdocumentspath,'access.tmp');
+  System.IOUtils.tpath.getdocumentspath,'access.inf');
+  GOptions := System.IOUtils.TPath.Combine(
+  System.IOUtils.tpath.getdocumentspath,'options.inf');
   if FileExists(GAccess) then
   begin
     GoogleClient.LoadFromFile(GAccess);
     try
       GoogleClient.RefreshToken;
     except
-      LoginClick(Self);
+      StartCalendarConnection;
     end;
   end
   else
-    LoginClick(Self);
+    StartCalendarConnection;
   CalendarList := TStringList.Create;
   EventList := TStringList.Create;
   //LoginPanel.Visible := True;
@@ -243,6 +221,8 @@ begin
   FormatSettings.DateSeparator := '-';
   FormatSettings.LongTimeFormat := 'HH:mm:ss';
   FormatSettings.TimeSeparator := ':';
+  TimetableDateEdit.Date := today;
+  InitOptions;
 end;
 
 procedure TSCalendar.FormDestroy(Sender: TObject);
@@ -251,41 +231,41 @@ begin
   EventList.Free;
 end;
 
+procedure TSCalendar.Image1Click(Sender: TObject);
+begin
+  if TimePanel.Visible then
+    ShowTimer(False)
+  else
+    ShowTimer(True);
+end;
+
+procedure TSCalendar.InitOptions;
+begin
+  OptionList := TStringList.Create;
+  if FileExists(GOptions) then
+      begin
+        try
+          OptionList.LoadFromFile(GOptions);
+          UpdateCalendarMenu;
+          CalendarBox.ItemIndex := StrToInt(OptionList.Values['CalendarIndex']);
+          UpdateCalendarEvents(0,today);
+          ShowEventsPanel(True);
+        except
+          UpdateCalendarMenu;
+          ShowOptionPanel(True);
+        end;
+      end
+      else
+      begin
+        UpdateCalendarMenu;
+        ShowOptionPanel(True);
+      end;
+end;
+
 procedure TSCalendar.LeftRightPanningExecute(Sender: TObject);
 begin
   if EventBox.ItemIndex > 0 then
    EventBox.ItemIndex := EventBox.ItemIndex - 1;
-end;
-
-procedure TSCalendar.LoginClick(Sender: TObject);
-begin
-  if not KeyEdit.Enabled then
-    begin
-    {$IFDEF WINDOWS}
-      ShellExecute(0, 'open', PChar(GoogleClient.StartConnect), nil, nil, SW_SHOWNORMAL);
-      KeyEdit.Enabled := True;
-      Login.Text := 'Завершить авторизацию';
-    {$ENDIF}
-    {$IFDEF ANDROID}
-      KeyEdit.Text:='here';
-      WebBrowser.Url := GoogleClient.StartConnect;
-      WebBrowser.Visible:=true;
-      WebBrowser.BringToFront;
-    {$ENDIF}
-    end
-  else
-    begin
-      KeyEdit.Enabled := False;
-      Login.Text := 'Войти';
-      try
-        GoogleClient.EndConnect(KeyEdit.Text);
-        Login.Enabled := False;
-        UpdateCalendarMenu;
-        LoginPanel.Visible:=False;
-        ChCaPanel.Visible:=True;
-      except
-      end;
-    end
 end;
 
 procedure TSCalendar.MainPanelClick(Sender: TObject);
@@ -302,24 +282,51 @@ begin
   end;
 end;
 
+procedure TSCalendar.ReloadButtonClick(Sender: TObject);
+begin
+  try
+   UpdateCalendarEvents(FilterBox.ItemIndex,TimetableDateEdit.Date);
+   UpdateEventView;
+  except
+  end;
+end;
+
 procedure TSCalendar.RightLeftPanningExecute(Sender: TObject);
 begin
  if EventBox.ItemIndex < (EventBox.Count - 1) then
    EventBox.ItemIndex := EventBox.ItemIndex + 1;
 end;
 
-procedure TSCalendar.ShowChCaPanel(ShowState: Boolean);
+procedure TSCalendar.ShowOptionPanel(ShowState: Boolean);
 begin
   if ShowState then
     begin
+      ShadowPanel.BringToFront;
+      OptionPanel.BringToFront;
       TimePanel.Visible := False;
       ShadowPanel.Visible := True;
-      ChCaPanel.Visible := True;
+      OptionPanel.Visible := True;
     end
   else
     begin
+      ShadowPanel.SendToBack;
+      OptionPanel.SendToBack;
       ShadowPanel.Visible := False;
-      ChCaPanel.Visible := False;
+      OptionPanel.Visible := False;
+    end;
+end;
+
+procedure TSCalendar.ShowEventsPanel(ShowState: Boolean);
+begin
+  if ShowState then
+    begin
+      EventsPanel.BringToFront;
+      EventsPanel.Visible := True
+    end
+  else
+    begin
+      EventsPanel.SendToBack;
+      EventsPanel.Visible := False;
     end;
 end;
 
@@ -327,17 +334,28 @@ procedure TSCalendar.ShowTimer(ShowState: Boolean);
 begin
   if ShowState then
     begin
-      ChCaPanel.Visible := False;
+      OptionPanel.Visible := False;
       ShadowPanel.Visible := True;
+      ShadowPanel.BringToFront;
+      TimePanel.BringToFront;
       TimePanel.Visible := True;
       ToTimer.Enabled := True;
     end
   else
     begin
+      ShadowPanel.SendToBack;
+      TimePanel.SendToBack;
       ShadowPanel.Visible := False;
       TimePanel.Visible := False;
       ToTimer.Enabled := False;
     end;
+end;
+
+procedure TSCalendar.StartCalendarConnection;
+begin
+  WebBrowser.Url := GoogleClient.StartConnect;
+  WebBrowser.Visible:=true;
+  WebBrowser.BringToFront;
 end;
 
 procedure TSCalendar.TimerSButtonClick(Sender: TObject);
@@ -346,6 +364,12 @@ begin
     ShowTimer(True)
   else
     ShowTimer(False);
+end;
+
+procedure TSCalendar.TimetableDateEditClosePicker(Sender: TObject);
+begin
+  if (TimetableDateEdit.Text <> '') and (FilterBox.ItemIndex > -1) then
+    UpdateCalendarEvents(FilterBox.ItemIndex,TimetableDateEdit.Date);
 end;
 
 procedure TSCalendar.TopDownPanningExecute(Sender: TObject);
@@ -444,41 +468,27 @@ begin
     end;
 end;
 
-function BuildRequest(AFilter: Integer): String;
+function BuildRequest(AFilter: Integer; ADay: TDate): String;
 var
   LocalN: TDateTime;
 begin
-  LocalN := TTimeZone.Local.ToUniversalTime(now);
+  LocalN := ADay;
   Result := 'https://www.googleapis.com/calendar/v3/calendars/'+
       HttpEncode(CalendarList.Values[SCalendar.CalendarBox.Selected.Text])
       +'/events?singleEvents=true&orderBy=startTime';
   case AFilter of
     0: Result := Result + '&timeMax=' + HttpEncode(
-      FormatDateTime('yyyy-MM-dd',TTimeZone.Local.ToUniversalTime(LocalN))
+      FormatDateTime('yyyy-MM-dd',LocalN)
       +'T16:00:00+00:00')+'&timeMin='+
       HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
     1: Result := Result + '&timeMax=' + HttpEncode(
-      FormatDateTime('yyyy-MM-dd',TTimeZone.Local.ToUniversalTime(LocalN))
+      FormatDateTime('yyyy-MM-dd',LocalN)
       +'T23:59:59+00:00')+'&timeMin='+ HttpEncode(
       FormatDateTime('yyyy-MM-dd',LocalN) + 'T16:00:00+00:00');
-    2: Result := Result + '&timeMax=' +
-      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+2)
-      +'T00:00:00+00:00')+'&timeMin='+
-      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+1) + 'T00:00:00+00:00');
-    3: Result := Result + '&timeMax=' +
-      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+5)
-      +'T00:00:00+00:00')+'&timeMin='+
-      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
-    4: Result := Result + '&timeMax=' +
-      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN+30)
-      +'T00:00:00+00:00')+'&timeMin='+
-      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
-    5: Result := Result + '&timeMin=' +
-      HttpEncode(FormatDateTime('yyyy-MM-dd',LocalN) + 'T00:00:00+00:00');
   end;
 end;
 
-procedure TSCalendar.UpdateCalendarEvents(AFilter: Integer);
+procedure TSCalendar.UpdateCalendarEvents(AFilter: Integer; ADay: TDate);
 var
   Response: TStringStream;
   JSONArray: ISuperArray;
@@ -488,10 +498,9 @@ var
 begin
   Response := TStringStream.Create;
   try
-    RequestString := BuildRequest(AFilter);
+    RequestString := BuildRequest(AFilter, ADay);
     //ShowMessage(RequestString);
     GoogleClient.Get(RequestString,Response);
-    //Response.SaveToFile('eventlist.json');
     JsonObject := SO(Response.DataString);
     JSONArray := JsonObject['items'].AsArray;
     EventList.Clear;
@@ -504,21 +513,37 @@ begin
       EventBox.Items.Add(EventInf.S['summary']);
     end;
     //RearrangeEvents;
-    finally
-      try
-        Response.Free;
-      except
-      end;
+  finally
+    try
+      Response.Free;
+    except
+    end;
+  end;
+end;
+
+procedure TSCalendar.OkButtonClick(Sender: TObject);
+begin
+  if CalendarBox.ItemIndex > -1 then
+    begin
+      ShowOptionPanel(False);
+      OptionList.Clear;
+      OptionList.Add('CalendarIndex='+IntToStr(CalendarBox.ItemIndex));
+      OptionList.SaveToFile(GOptions);
+      ShowEventsPanel(True);
     end;
 end;
 
-procedure TSCalendar.UpEventsButtonClick(Sender: TObject);
+procedure TSCalendar.OptionsButtonClick(Sender: TObject);
 begin
-  if (CalendarBox.Selected <> nil) and (FilterBox.Selected <> nil) then
-  begin
-    UpdateCalendarEvents(FilterBox.ItemIndex);
-    ShowChCaPanel(False);
-  end;
+  if not OptionPanel.Visible then
+    begin
+      UpdateCalendarMenu;
+      ShowOptionPanel(True);
+    end
+  else
+    begin
+      ShowOptionPanel(False);
+    end;
 end;
 
 procedure TSCalendar.WebBrowserShouldStartLoadWithRequest(ASender: TObject;
@@ -530,36 +555,14 @@ begin
   begin
     try
       FStr := URL.Substring(pos('code=',URL)+'code='.Length-1);
-      //ShowMessage(FStr);
       GoogleClient.EndConnect(Fstr);
-      //ShowMessage(DateToStr(GoogleClient.TokenInfo.ExpiresTime));
-      Login.Enabled := False;
       WebBrowser.Visible := False;
-      ShowChCaPanel(True);
-      UpdateCalendarMenu;
-      LoginPanel.Visible:=False;
       GoogleClient.SaveToFile(GAccess);
-      ShowMessage('Saved in '+GAccess);
+      //ShowMessage('Saved in '+GAccess);
     except
     end;
   end;
 end;
 
-
-procedure TSCalendar.FormResize(Sender: TObject);
-begin
-  if ClientWidth > 450 then
-    begin
-      EventsSButton.Visible := False;
-      MainPanel.Align := TAlignLayout.Client;
-      LeftPanel.Visible := True;
-    end
-  else
-    begin
-      EventsSButton.Visible := True;
-      MainPanel.Align := TAlignLayout.Contents;
-      LeftPanel.Visible := False;
-    end;
-end;
 
 end.
