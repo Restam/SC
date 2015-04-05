@@ -1,0 +1,70 @@
+inherited SCalendar_LgXhdpiPh: TSCalendar_LgXhdpiPh
+  ClientHeight = 695
+  ClientWidth = 450
+  DesignerMasterStyle = 3
+  inherited MenuPanel: TPanel
+    Size.Width = 450.000000000000000000
+    inherited OptionsButton: TSpeedButton
+      Position.X = 402.000000000000000000
+      TextSettings.Font.Size = 24.000000000000000000
+    end
+    inherited DateLabel: TLabel
+      Size.Width = 0.000000000000000000
+    end
+    inherited BackButton: TButton
+      Size.Width = 402.000000000000000000
+    end
+  end
+  inherited MainPanel: TPanel
+    Size.Width = 450.000000000000000000
+    Size.Height = 647.000000000000000000
+    inherited MainTabControl: TTabControl
+      Padding.Bottom = 50.000000000000000000
+      Size.Width = 450.000000000000000000
+      Size.Height = 614.000000000000000000
+      inherited WeekTab: TTabItem
+        inherited WeekPeriodLabel: TLabel
+          Size.Width = 430.000000000000000000
+        end
+        inherited DaysScrollBox: TFramedVertScrollBox
+          Margins.Top = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 430.000000000000000000
+          Size.Height = 511.000000000000000000
+        end
+      end
+      inherited DayTab: TTabItem
+        inherited DayPeriodLabel: TLabel
+          Size.Width = 430.000000000000000000
+        end
+        inherited EventsBox: TListBox
+          Size.Width = 430.000000000000000000
+          Size.Height = 521.000000000000000000
+        end
+      end
+      inherited EventTab: TTabItem
+        inherited EventTabControl: TTabControl
+          Size.Width = 450.000000000000000000
+          Size.Height = 564.000000000000000000
+        end
+      end
+      inherited SettingsTab: TTabItem
+        inherited SettingsPanel: TPanel
+          Visible = False
+          inherited ButtonPanel: TPanel
+            inherited OkButton: TButton
+              Size.Width = 123.000000000000000000
+            end
+            inherited ReloginButton: TButton
+              Margins.Right = 10.000000000000000000
+            end
+          end
+        end
+      end
+    end
+    inherited BrendLabel: TLabel
+      Position.Y = 619.000000000000000000
+      Size.Width = 440.000000000000000000
+    end
+  end
+end

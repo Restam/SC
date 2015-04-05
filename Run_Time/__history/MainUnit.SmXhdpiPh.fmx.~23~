@@ -1,0 +1,80 @@
+inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
+  ClientHeight = 375
+  ClientWidth = 250
+  DesignerMasterStyle = 3
+  inherited MenuPanel: TPanel
+    Size.Width = 250.000000000000000000
+    inherited OptionsButton: TSpeedButton
+      Size.Width = 154.000000000000000000
+    end
+    inherited TimeButton: TSpeedButton
+      Position.X = 202.000000000000000000
+    end
+    inherited ReloadButton: TSpeedButton
+      Position.X = 154.000000000000000000
+    end
+  end
+  inherited MainPanel: TPanel
+    Size.Width = 250.000000000000000000
+    Size.Height = 327.000000000000000000
+    inherited EditSaveButton: TButton
+      Position.Y = 272.000000000000000000
+      Size.Width = 220.000000000000000000
+      Size.Height = 40.000000000000000000
+    end
+  end
+  inherited EventsPanel: TPanel
+    Size.Width = 250.000000000000000000
+    Size.Height = 327.000000000000000000
+    inherited EventBox: TListBox
+      Size.Width = 250.000000000000000000
+      Size.Height = 277.000000000000000000
+    end
+    inherited Panel1: TPanel
+      Position.Y = 277.000000000000000000
+      Size.Width = 250.000000000000000000
+      inherited TimetableDateEdit: TDateEdit
+        Size.Width = 124.000000000000000000
+      end
+      inherited FilterBox: TComboBox
+        Position.X = 136.000000000000000000
+        Size.Width = 109.000000000000000000
+      end
+    end
+  end
+  inherited EventsManager: TGestureManager
+    GestureData = <
+      item
+        Control = MainPanel
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end
+          item
+            GestureID = sgiDown
+          end
+          item
+            GestureID = sgiUp
+          end>
+      end
+      item
+        Control = EventsPanel
+        Collection = <
+          item
+            GestureID = sgiLeft
+          end
+          item
+            GestureID = sgiRight
+          end
+          item
+            GestureID = sgiUp
+          end
+          item
+            GestureID = sgiDown
+          end>
+      end>
+  end
+end

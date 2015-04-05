@@ -3,10 +3,10 @@
         <ProjectGuid>{F2DA5BD3-143F-4CC1-ABE9-142B6DEF82B5}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="Run_Time\SchoolCalendar.dproj">
+        <Projects Include="Design_Time\Diagrams.tgproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="Design_Time\Diagrams.tgproj">
+        <Projects Include="Run_Time\SchoolCalendar.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -17,15 +17,6 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="SchoolCalendar">
-        <MSBuild Projects="Run_Time\SchoolCalendar.dproj"/>
-    </Target>
-    <Target Name="SchoolCalendar:Clean">
-        <MSBuild Projects="Run_Time\SchoolCalendar.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="SchoolCalendar:Make">
-        <MSBuild Projects="Run_Time\SchoolCalendar.dproj" Targets="Make"/>
-    </Target>
     <Target Name="Diagrams">
         <MSBuild Projects="Design_Time\Diagrams.tgproj"/>
     </Target>
@@ -35,14 +26,23 @@
     <Target Name="Diagrams:Make">
         <MSBuild Projects="Design_Time\Diagrams.tgproj" Targets="Make"/>
     </Target>
+    <Target Name="SchoolCalendar">
+        <MSBuild Projects="Run_Time\SchoolCalendar.dproj"/>
+    </Target>
+    <Target Name="SchoolCalendar:Clean">
+        <MSBuild Projects="Run_Time\SchoolCalendar.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SchoolCalendar:Make">
+        <MSBuild Projects="Run_Time\SchoolCalendar.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="SchoolCalendar;Diagrams"/>
+        <CallTarget Targets="Diagrams;SchoolCalendar"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="SchoolCalendar:Clean;Diagrams:Clean"/>
+        <CallTarget Targets="Diagrams:Clean;SchoolCalendar:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="SchoolCalendar:Make;Diagrams:Make"/>
+        <CallTarget Targets="Diagrams:Make;SchoolCalendar:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

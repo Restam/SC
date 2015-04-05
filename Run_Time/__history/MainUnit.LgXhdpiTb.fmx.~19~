@@ -1,0 +1,89 @@
+inherited SCalendar_LgXhdpiTb: TSCalendar_LgXhdpiTb
+  ClientHeight = 829
+  ClientWidth = 480
+  DesignerMasterStyle = 3
+  inherited MenuPanel: TPanel
+    Size.Width = 480.000000000000000000
+    inherited OptionsButton: TSpeedButton
+      Position.X = 432.000000000000000000
+      TextSettings.Font.Size = 24.000000000000000000
+    end
+    inherited DateLabel: TLabel
+      Size.Width = 0.000000000000000000
+    end
+    inherited BackButton: TButton
+      Size.Width = 432.000000000000000000
+    end
+  end
+  inherited MainPanel: TPanel
+    Size.Width = 480.000000000000000000
+    Size.Height = 781.000000000000000000
+    inherited MainTabControl: TTabControl
+      Padding.Bottom = 50.000000000000000000
+      Size.Width = 480.000000000000000000
+      Size.Height = 748.000000000000000000
+      inherited WeekTab: TTabItem
+        inherited WeekPeriodLabel: TLabel
+          Size.Width = 460.000000000000000000
+        end
+        inherited DaysScrollBox: TFramedVertScrollBox
+          Margins.Top = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Size.Width = 460.000000000000000000
+          Size.Height = 645.000000000000000000
+        end
+      end
+      inherited DayTab: TTabItem
+        inherited DayPeriodLabel: TLabel
+          Size.Width = 460.000000000000000000
+        end
+        inherited EventsBox: TListBox
+          Size.Width = 460.000000000000000000
+          Size.Height = 655.000000000000000000
+        end
+      end
+      inherited EventTab: TTabItem
+        inherited EventTabControl: TTabControl
+          Size.Width = 480.000000000000000000
+          Size.Height = 698.000000000000000000
+        end
+      end
+      inherited SettingsTab: TTabItem
+        inherited SettingsPanel: TPanel
+          Visible = False
+          inherited ButtonPanel: TPanel
+            inherited OkButton: TButton
+              Size.Width = 123.000000000000000000
+            end
+            inherited ReloginButton: TButton
+              Margins.Right = 10.000000000000000000
+            end
+          end
+        end
+      end
+    end
+    inherited BrendLabel: TLabel
+      Position.Y = 753.000000000000000000
+      Size.Width = 470.000000000000000000
+    end
+  end
+  inherited EventsPanel: TPanel
+    Size.Width = 480.000000000000000000
+    Size.Height = 781.000000000000000000
+    inherited EventBox: TListBox
+      Size.Width = 480.000000000000000000
+      Size.Height = 731.000000000000000000
+    end
+    inherited Panel1: TPanel
+      Position.Y = 731.000000000000000000
+      Size.Width = 480.000000000000000000
+      inherited TimetableDateEdit: TDateEdit
+        Size.Width = 228.000000000000000000
+      end
+      inherited FilterBox: TComboBox
+        Position.X = 240.000000000000000000
+        Size.Width = 235.000000000000000000
+      end
+    end
+  end
+end

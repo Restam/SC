@@ -5,170 +5,107 @@ inherited SCalendar_XLgXhdpiTb: TSCalendar_XLgXhdpiTb
   inherited MenuPanel: TPanel
     Size.Width = 800.000000000000000000
     inherited OptionsButton: TSpeedButton
-      Size.Width = 704.000000000000000000
-      TextSettings.Font.Size = 24.000000000000000000
-    end
-    inherited TimeButton: TSpeedButton
       Position.X = 752.000000000000000000
-      inherited Image1: TImage
-        MultiResBitmap = <
-          item
-            Width = 48
-            Height = 48
-            PNG = {
-              89504E470D0A1A0A0000000D49484452000000300000003008060000005702F9
-              87000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
-              0318494441546843ED98CB71DB301086F538BB80A400A500156015A05490BBD4
-              80EF51EE4901D63D4901F13DF23D6AC0052405F82C29DF4F019C2525920B52F1
-              C4237E331CBC885D2CB058801CF4F4F4F4F45C35C3905E84C3E130E399F24C28
-              DE8C4623A583FD7EFF44F23C1C0E9F78B63C1BD55F82CE0630B8B70C68417ACB
-              806F42752DBCFBCCBB8F18BA26FD1DAA5BD1C90006B020D1731606FA4729837C
-              93559C67CD04AC433E99560668D619FCE7E82211EA370CE691ECB63CB3EA4322
-              F7D24ACD8EB54768936BDDB5598D640350366110F728B3EEF290E20E32466E47
-              767EACC9EAB44796C8D07EF93748F16EB7FBC9607FE909F969682EC0BBEF69BF
-              571AAA4E50DFB23CE908CD2E4621758112B94D36F328D2B22F79B659E32913DE
-              9DD25EE9FFEA2B1992A5B2644B47D6E8C46D00821728886151CBBDAA5B6EDE2F
-              EC8F2A2443B2243394E5A29581A18CCB80B0ACB9509468C35DCC57254B324351
-              282CBB5CC96500336467E4414B1FF21E5C0309321F8EA5139D957857E03664E5
-              1A49319BBE756740012BDBEAACA3D10084CE58DEB87137E4BDB13A299A08C996
-              8E90D7862E9C17E7F018908749965587940B06E09E798BD5617557E131C04693
-              14DF6F4BAEA3A4FB2C9E3D90BB4282FB585CE13452D2D178396C3420BA02BE99
-              5DCC52912F87AC9BA88BBE175981CEE00AAB90BD388D06301BF1984FDA94F4B3
-              FB659E628459F5C6C3D2B302D9112F10E80E8DE3F17849921F4C30A77FE5C52E
-              52D291EBAEA2D100C29A9D85C6B066A1EF8A99FF1E8A2A7F741861C376F71540
-              880D6BAED3D1823B7CA1DFA7506C34C2EAB0BA3B61EFEC296E64D1A0AD1C9E93
-              5356B263BBDE0DD5B5B8A210B3989F8ECC8AFBAA6B41C60FFAEAEE9FF935A956
-              A21026AD6CABB30E9701CC88BDC029A224ED850883CA3E826404799D0FEF8E2D
-              990EC9CC3F314B3ABB83C0058FFDF44B3A612DF42D5CD424ABE45EAD56B91194
-              7C8B4A94EF6244240CBE203734B948FA2B81326DB2AF61F955962BDCB58D16C8
-              9A22C37E67EB53F50365F79DEBD5FF56B9BE1F5B1606A359ACDC700CECFFFCB5
-              68D1CCCA1D485FDFCFDD320CE8C57FAFF7F4F4F4F45C3383C15F15F243AF902F
-              34740000000049454E44AE426082}
-          end>
-      end
     end
-    inherited ReloadButton: TSpeedButton
+    inherited DateLabel: TLabel
+      Size.Width = 704.000000000000000000
+    end
+    inherited BackButton: TButton
+      StyledSettings = [Family, Size, Style]
+    end
+    inherited UpdateButton: TButton
       Position.X = 704.000000000000000000
     end
   end
   inherited MainPanel: TPanel
     Size.Width = 800.000000000000000000
     Size.Height = 1207.000000000000000000
-    inherited SummaryLabel: TLabel
+    inherited MainTabControl: TTabControl
       Size.Width = 800.000000000000000000
-      Size.Height = 839.000000000000000000
-      TextSettings.Font.Size = 43.000000000000000000
-    end
-    inherited EndTimeLabel: TLabel
-      Position.Y = 1042.000000000000000000
-      Size.Width = 770.000000000000000000
-      Size.Height = 29.000000000000000000
-      TextSettings.Font.Size = 24.000000000000000000
-    end
-    inherited EditSaveButton: TButton
-      Position.Y = 1128.000000000000000000
-      Size.Width = 770.000000000000000000
-      Size.Height = 64.000000000000000000
-      TextSettings.Font.Size = 26.000000000000000000
-    end
-    inherited StartTimeLabel: TLabel
-      Position.Y = 971.000000000000000000
-      Size.Width = 770.000000000000000000
-      Size.Height = 29.000000000000000000
-      TextSettings.Font.Size = 24.000000000000000000
-    end
-    inherited StartTimeEdit: TEdit
-      TextSettings.Font.Size = 24.000000000000000000
-      Position.Y = 1005.000000000000000000
-      Size.Width = 770.000000000000000000
-      StyledSettings = [Family, Style, FontColor]
-    end
-    inherited EndTimeEdit: TEdit
-      TextSettings.Font.Size = 24.000000000000000000
-      Position.Y = 1081.000000000000000000
-      Size.Width = 770.000000000000000000
-      StyledSettings = [Family, Style, FontColor]
-    end
-    inherited LessonPanel: TPanel
-      Position.Y = 839.000000000000000000
-      Size.Width = 800.000000000000000000
-      inherited RoomEdit: TEdit
-        TextSettings.Font.Size = 24.000000000000000000
-        Position.Y = 14.000000000000000000
-        Size.Width = 770.000000000000000000
-        StyledSettings = [Family, Style, FontColor]
+      Size.Height = 1174.000000000000000000
+      inherited WeekTab: TTabItem
+        inherited WeekPeriodLabel: TLabel
+          Size.Width = 780.000000000000000000
+        end
+        inherited DaysScrollBox: TFramedVertScrollBox
+          Size.Width = 780.000000000000000000
+          Size.Height = 1131.000000000000000000
+        end
       end
-      inherited RoomLabel: TLabel
-        Position.Y = -20.000000000000000000
-        Size.Width = 770.000000000000000000
-        Size.Height = 29.000000000000000000
-        TextSettings.Font.Size = 24.000000000000000000
+      inherited DayTab: TTabItem
+        inherited DayPeriodLabel: TLabel
+          Size.Width = 780.000000000000000000
+        end
+        inherited EventsBox: TListBox
+          Size.Width = 780.000000000000000000
+          Size.Height = 1131.000000000000000000
+        end
       end
-      inherited TeacherEdit: TEdit
-        TextSettings.Font.Size = 24.000000000000000000
-        Size.Width = 770.000000000000000000
-        StyledSettings = [Family, Style, FontColor]
-      end
-      inherited TeacherLabel: TLabel
-        Position.Y = 56.000000000000000000
-        Size.Width = 770.000000000000000000
-        Size.Height = 29.000000000000000000
-        TextSettings.Font.Size = 24.000000000000000000
-      end
-    end
-  end
-  inherited EventsPanel: TPanel
-    Size.Width = 800.000000000000000000
-    Size.Height = 1207.000000000000000000
-    inherited EventBox: TListBox
-      Size.Width = 800.000000000000000000
-      Size.Height = 1157.000000000000000000
-    end
-    inherited Panel1: TPanel
-      Position.Y = 1157.000000000000000000
-      Size.Width = 800.000000000000000000
-      inherited TimetableDateEdit: TDateEdit
-        Size.Width = 388.000000000000000000
-      end
-      inherited FilterBox: TComboBox
-        Position.X = 400.000000000000000000
-        Size.Width = 395.000000000000000000
-      end
-    end
-  end
-  inherited EventsManager: TGestureManager
-    GestureData = <
-      item
-        Control = MainPanel
-        Collection = <
-          item
-            GestureID = sgiLeft
+      inherited EventTab: TTabItem
+        inherited EventTabFrame: TEventTabFrame
+          Size.Width = 800.000000000000000000
+          Size.Height = 1174.000000000000000000
+          inherited EndTimeEdit: TEdit
+            Position.Y = 1073.000000000000000000
+            Size.Width = 770.000000000000000000
           end
-          item
-            GestureID = sgiRight
+          inherited EndTimeLabel: TLabel
+            Position.Y = 1046.000000000000000000
+            Size.Width = 770.000000000000000000
           end
-          item
-            GestureID = sgiDown
+          inherited StartTimeEdit: TEdit
+            Position.Y = 1009.000000000000000000
+            Size.Width = 770.000000000000000000
           end
-          item
-            GestureID = sgiUp
-          end>
+          inherited StartTimeLabel: TLabel
+            Position.Y = 987.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+          inherited SummaryLabel: TLabel
+            Size.Width = 800.000000000000000000
+            Size.Height = 982.000000000000000000
+          end
+          inherited TimeLeftLabel: TLabel
+            Position.Y = 1110.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+          inherited TimeLeftEdit: TEdit
+            Position.Y = 1137.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+        end
       end
-      item
-        Control = EventsPanel
-        Collection = <
-          item
-            GestureID = sgiLeft
+      inherited SettingsTab: TTabItem
+        inherited SettingsPanel: TPanel
+          Position.Y = 465.000000000000000000
+          Size.Width = 800.000000000000000000
+          inherited CalendarBox: TComboBox
+            Size.Width = 780.000000000000000000
           end
-          item
-            GestureID = sgiRight
+          inherited ChooseCalendarLabel: TLabel
+            Size.Width = 780.000000000000000000
           end
-          item
-            GestureID = sgiUp
+          inherited ButtonPanel: TPanel
+            Size.Width = 800.000000000000000000
+            inherited OkButton: TButton
+              Size.Width = 387.000000000000000000
+            end
+            inherited ReloginButton: TButton
+              Size.Width = 383.000000000000000000
+            end
           end
-          item
-            GestureID = sgiDown
-          end>
-      end>
+          inherited ProfileBox: TComboBox
+            Size.Width = 780.000000000000000000
+          end
+          inherited GradeBox: TComboBox
+            Size.Width = 780.000000000000000000
+          end
+        end
+      end
+    end
+    inherited BrendLabel: TLabel
+      Position.Y = 1179.000000000000000000
+      Size.Width = 790.000000000000000000
+    end
   end
 end

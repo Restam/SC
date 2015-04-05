@@ -235,11 +235,17 @@
     </PropertyGroup>
     <Import Project="..\IconsFinal\iconset.optset" Condition="'$(Cfg_2_Android)'!='' And Exists('..\IconsFinal\iconset.optset')"/>
     <PropertyGroup Condition="'$(Cfg_2_Android)'!=''">
-        <PF_AliasKeyPass>85380DA36405559EA3757169D17BE32C819C055DA057979397B50FF08E723CD8DB05A38FE3431C4DC1CC572EFA9CC37ABAF83612047422E0166545C2E5F1228CC90AB930EE8EA8CED3C73B0772348594F78A3349</PF_AliasKeyPass>
-        <PF_KeyStorePass>853847CC5F905585A304712AD15DE33A81940557A005978797B40FAA8E6D3CD0DB48A3D6E3181C3AC1B85752FAB3C36BBABA361304262290166845ECE5BA2290C95DF35DD544A8CED3C73B0772348594F78A3349</PF_KeyStorePass>
+        <AUP_CALL_PHONE>false</AUP_CALL_PHONE>
+        <AUP_CAMERA>false</AUP_CAMERA>
+        <AUP_READ_CALENDAR>false</AUP_READ_CALENDAR>
+        <AUP_READ_PHONE_STATE>false</AUP_READ_PHONE_STATE>
+        <PF_AliasKeyPass>54E50DFE644355A9A301713BD13FE36081DA0549A057979297EE0FB48E3E3CD9DB5DA38CE3371C4DC1B0577DFADEC37ABAF93641045722CE16654589E5A6228C18D5B930EE8EA8CED3C73B0772348594F78A3349</PF_AliasKeyPass>
+        <AUP_ACCESS_FINE_LOCATION>false</AUP_ACCESS_FINE_LOCATION>
+        <AUP_WRITE_CALENDAR>false</AUP_WRITE_CALENDAR>
+        <AUP_ACCESS_COARSE_LOCATION>false</AUP_ACCESS_COARSE_LOCATION>
+        <VerInfo_Keys>package=resteam.SchoolCalendar;label=SchoolCalendar;versionCode=0;versionName= beta test SC;persistent=False;restoreAnyVersion=False;installLocation=preferExternal;largeHeap=False;theme=TitleBar;hardwareAccelerated=true</VerInfo_Keys>
+        <PF_KeyStore>C:\Delphi_Projects\SC\release.keystore</PF_KeyStore>
         <PF_AliasKey>restamteam</PF_AliasKey>
-        <PF_KeyStore>C:\Delphi_Projects\School_Calendar\release.keystore</PF_KeyStore>
-        <VerInfo_Build>1</VerInfo_Build>
         <Android_SplashTileMode>disabled</Android_SplashTileMode>
         <Android_SplashGravity>center</Android_SplashGravity>
         <CfgDependentOn>..\IconsFinal\iconset.optset</CfgDependentOn>
@@ -255,6 +261,16 @@
         <DCCReference Include="..\x-superobject\XSuperJSON.pas"/>
         <DCCReference Include="..\x-superobject\XSuperObject.pas"/>
         <DCCReference Include="..\OAuthClient\Google.OAuth.pas"/>
+        <DCCReference Include="EventTabUnit.pas">
+            <Form>EventTabFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DayUnit.pas">
+            <Form>DayFrame</Form>
+            <FormType>fmx</FormType>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

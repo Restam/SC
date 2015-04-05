@@ -1,0 +1,517 @@
+unit MainUnit;
+
+interface
+
+uses
+  System.SysUtils, System.JSON, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, Google.OAuth, HttpApp,DateUtils,
+  FMX.StdCtrls, System.Actions, FMX.ActnList, FMX.Menus, FMX.Layouts, XSuperJson, XSuperObject,
+  FMX.Gestures, FMX.Controls.Presentation, FMX.Edit, FMX.ListBox,
+  FMX.DateTimeCtrls, System.IOUtils, FMX.WebBrowser, FMX.Calendar, FMX.ListView.Types,
+  FMX.ListView, FMX.Objects, FMX.TabControl, EventTabUnit, DayUnit;
+
+type
+  TSCalendar = class(TForm)
+    GoogleClient: TOAuthClient;
+    RefreshTokenTimer: TTimer;
+    MainPanel: TPanel;
+    WebBrowser: TWebBrowser;
+    ToTimer: TTimer;
+    MenuPanel: TPanel;
+    StyleBook1: TStyleBook;
+    SettingsPanel: TPanel;
+    CalendarBox: TComboBox;
+    OkButton: TButton;
+    OptionsButton: TSpeedButton;
+    ChooseCalendarLabel: TLabel;
+    EventTabControl: TTabControl;
+    DateLabel: TLabel;
+    MainTabControl: TTabControl;
+    BrendLabel: TLabel;
+    EventTab: TTabItem;
+    DayTab: TTabItem;
+    WeekTab: TTabItem;
+    WeekPeriodLabel: TLabel;
+    DayPeriodLabel: TLabel;
+    DaysScrollBox: TFramedVertScrollBox;
+    EventsBox: TListBox;
+    SettingsTab: TTabItem;
+    ButtonPanel: TPanel;
+    ReloginButton: TButton;
+    ProfileBox: TComboBox;
+    GradeBox: TComboBox;
+    BackButton: TButton;
+    ActionList1: TActionList;
+    UpdateButton: TButton;
+    procedure FormCreate(Sender: TObject);
+    procedure OkButtonClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure WebBrowserShouldStartLoadWithRequest(ASender: TObject;
+      const URL: string);
+    procedure RefreshTokenTimerTimer(Sender: TObject);
+    procedure ToTimerTimer(Sender: TObject);
+    procedure OptionsButtonClick(Sender: TObject);
+    procedure ReloginButtonClick(Sender: TObject);
+    procedure CalendarBoxChange(Sender: TObject);
+    procedure BackButtonClick(Sender: TObject);
+    procedure EventsBoxItemClick(const Sender: TCustomListBox;
+      const Item: TListBoxItem);
+    procedure UpdateButtonClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure UpdateCalendarMenu;
+    procedure UpdateCalendarEvents(AStartDay, AEndDay: TDate);
+    procedure StartCalendarConnection;
+    procedure InitOptions;
+    function ExtractGradeFromName(AName: String): String;
+    procedure LoadWeekRepresentation;
+    procedure LoadEventRepresentation(EventN: Integer);
+    procedure LoadEventsRepresentation(ADay: TDate; EventID: Integer);
+    function ClearDescFromTag(ADescription: String): String;
+    function GetValueFromDescription(ADescription,AName: String): String;
+    procedure LoadDayRepresentation(ADay: TDate);
+    procedure DayClick(Sender: TObject);
+  public
+    { Public declarations }
+  end;
+    function BuildRequest(AStartDay, AEndDay: TDate): String;
+var
+  SCalendar: TSCalendar;
+  CalendarList, OptionList: TStringList;
+  EventsArray: ISuperArray;
+  FormatSettings: TFormatSettings;
+  GAccess, GOptions: String;
+  DayFrames: array [0..6] of TDayFrame;
+implementation
+
+{$R *.fmx}
+{$R *.SmXhdpiPh.fmx ANDROID}
+{$R *.NmXhdpiPh.fmx ANDROID}
+{$R *.LgXhdpiPh.fmx ANDROID}
+{$R *.LgXhdpiTb.fmx ANDROID}
+{$R *.XLgXhdpiTb.fmx ANDROID}
+
+//timer never started
+//hide back button while setting options
+
+procedure TSCalendar.ReloginButtonClick(Sender: TObject);
+begin
+  StartCalendarConnection;
+end;
+
+procedure TSCalendar.BackButtonClick(Sender: TObject);
+begin
+  if BackButton.Text = 'Week' then
+  begin
+    LoadWeekRepresentation;
+    MainTabControl.ActiveTab := MainTabControl.Tabs[0];
+    BackButton.Visible := False;
+  end
+  else
+  begin
+    LoadDayRepresentation(StrToDate(DayPeriodLabel.Text));
+    MainTabControl.ActiveTab := MainTabControl.Tabs[1];
+    BackButton.Text := 'Week';
+  end;
+end;
+
+procedure TSCalendar.CalendarBoxChange(Sender: TObject);
+begin
+  if CalendarBox.Selected.Text.Contains('SC') then
+  begin
+    ProfileBox.Enabled := True;
+    GradeBox.Enabled := True;
+  end;
+end;
+
+function TSCalendar.ClearDescFromTag(ADescription: String): String;
+var
+  stpos: Integer;
+begin
+  if ADescription.Contains('#lesson') then
+  begin
+    stpos := pos('#lesson',ADescription);
+    ADescription := ADescription.Remove(stpos-1,'#lesson'.Length);
+  end;
+  Result := ADescription;
+end;
+
+procedure TSCalendar.DayClick(Sender: TObject);
+var
+  DayDate: TDate;
+begin
+  DayDate := StrToDate((((Sender as TfmxObject).Parent.Parent) as TDayFrame).DayPeriodLabel.Text);
+  LoadDayRepresentation(DayDate);
+  MainTabControl.ActiveTab := MainTabControl.Tabs[1];
+  BackButton.Text := 'Week';
+  BackButton.Visible := True;
+end;
+
+procedure TSCalendar.EventsBoxItemClick(const Sender: TCustomListBox;
+  const Item: TListBoxItem);
+begin
+  LoadEventsRepresentation(StrToDate(DayPeriodLabel.Text),Item.Index);
+  Application.ProcessMessages;
+  BackButton.Text := 'Day';
+  BackButton.Visible := True;
+  MainTabControl.ActiveTab := MainTabControl.Tabs[2];
+end;
+
+function TSCalendar.ExtractGradeFromName(AName: String): String;
+begin
+  Result := AName.Substring(AName.IndexOf('/')+1)
+end;
+
+procedure TSCalendar.FormCreate(Sender: TObject);
+begin
+  GAccess := System.IOUtils.TPath.Combine(
+  System.IOUtils.tpath.getdocumentspath,'access.ini');
+  GOptions := System.IOUtils.TPath.Combine(
+  System.IOUtils.tpath.getdocumentspath,'options.ini');
+  CalendarList := TStringList.Create;
+  FormatSettings.ShortDateFormat := 'yyyy-MM-dd';
+  FormatSettings.DateSeparator := '-';
+  FormatSettings.LongTimeFormat := 'HH:mm:ss';
+  FormatSettings.TimeSeparator := ':';
+  DateLabel.Text := DateToStr(today);
+  if FileExists(GAccess) then
+  begin
+    GoogleClient.LoadFromFile(GAccess);
+    try
+      GoogleClient.RefreshToken;
+    except
+    end;
+    InitOptions;
+  end
+  else
+    StartCalendarConnection;
+end;
+
+procedure TSCalendar.FormDestroy(Sender: TObject);
+begin
+  CalendarList.Free;
+  OptionList.Free;
+end;
+
+function TSCalendar.GetValueFromDescription(ADescription,
+  AName: String): String;
+var
+  X: ISuperObject;
+begin
+  try
+    X := SO(ADescription);
+    Result := X.S[AName];
+  except
+    Result := '';
+  end;
+end;
+
+procedure TSCalendar.InitOptions;
+begin
+  OptionList := TStringList.Create;
+  if FileExists(GOptions) then
+  begin
+    try
+      OptionList.LoadFromFile(GOptions);
+      UpdateCalendarMenu;
+      CalendarBox.ItemIndex := StrToInt(OptionList.Values['CalendarIndex']);
+      if CalendarBox.Selected.Text.Contains('SC') then
+      begin
+        ProfileBox.ItemIndex := StrToInt(OptionList.Values['MajorIndex']);
+        GradeBox.ItemIndex := StrToInt(OptionList.Values['GradeIndex']);
+      end;
+      UpdateCalendarEvents(today,today+6);
+      LoadDayRepresentation(today);
+      BackButton.Text := 'Week';
+      BackButton.Visible := True;
+      MainTabControl.ActiveTab := MainTabControl.Tabs[1];
+    except
+      UpdateCalendarMenu;
+      MainTabControl.ActiveTab := MainTabControl.Tabs[3];
+    end;
+  end
+  else
+  begin
+    UpdateCalendarMenu;
+    MainTabControl.ActiveTab := MainTabControl.Tabs[3];
+  end;
+end;
+
+procedure TSCalendar.LoadDayRepresentation(ADay: TDate);
+var
+  i, ind: Integer;
+  EventObject, StartObject: ISuperObject;
+  desc: String;
+begin
+  EventsBox.Clear;
+  //UpdateCalendarEvents(today,today+6);
+  DayPeriodLabel.Text := DateToStr(ADay);
+  //ShowMessage(EventsArray.AsJSON);
+  for i := 0 to EventsArray.Length-1 do
+    begin
+      EventObject := EventsArray.O[i];
+      StartObject := EventObject.O['start'];
+      desc := StartObject.AsJSON;
+      if Trunc(StrToDateTime(StartObject.S['dateTime'],FormatSettings))=ADay then
+      begin
+        ind := EventsBox.Items.Add(EventObject.S['summary']);
+        desc := EventObject.S['description'];
+        if desc.Contains('#lesson') then
+          EventsBox.Items[ind] := EventsBox.Items[ind]+'  '+
+            GetValueFromDescription(ClearDescFromTag(desc),'room')+'  '+
+            GetValueFromDescription(ClearDescFromTag(desc),'teacher')
+      end;
+    end;
+    SCalendar.UpdateActions;
+end;
+
+procedure TSCalendar.LoadEventRepresentation(EventN: Integer);
+var
+  EventFrame: TEventTabFrame;
+  EventObject, StartObject, EndObject: ISuperObject;
+  desc: String;
+  EventItem: TTabITem;
+begin
+  EventItem := EventTabControl.Add;
+  EventFrame := TEventTabFrame.Create(EventItem);
+  EventObject := EventsArray.O[EventN];
+  StartObject := EventObject.O['start'];
+  EventFrame.StartTimeEdit.Text := StartObject.S['dateTime'];
+  EndObject := EventObject.O['end'];
+  EventFrame.EndTimeEdit.Text := StartObject.S['endTime'];
+  desc := EventObject.S['description'];
+  if desc.Contains('#lesson') then
+  begin
+    EventFrame.LessonPanel.Visible := True;
+    desc := ClearDescFromTag(desc);
+    EventFrame.RoomEdit.Text := GetValueFromDescription(desc,'room');
+    EventFrame.TeacherEdit.Text := GetValueFromDescription(desc,'teacher');
+  end;
+end;
+
+
+procedure TSCalendar.LoadEventsRepresentation(ADay: TDate; EventID: Integer);
+var
+  i,i1: Integer;
+  EventObject, StartObject: ISuperObject;
+begin
+  //UpdateCalendarEvents(today,today+6);
+  for i := 0 to EventTabControl.TabCount-1 do
+    EventTabControl.Tabs[i].Free;
+  for i1 := 0 to EventsArray.Length-1 do
+  begin
+    EventObject := EventsArray.O[i1];
+    StartObject := EventObject.O['start'];
+    if Trunc(StrToDateTime(StartObject.S['dateTime'],FormatSettings))=ADay then
+      LoadEventRepresentation(i1);
+  end;
+  EventTabControl.ActiveTab:=EventTabControl.Tabs[EventID];
+  SCalendar.UpdateActions;
+end;
+
+procedure TSCalendar.LoadWeekRepresentation;
+var
+  i, i1, ind: Integer;
+  DayDate: TDate;
+  EventObject, StartObject: ISuperObject;
+  desc: String;
+begin
+  //UpdateCalendarEvents(today,today+6);
+  for i := 0 to 6 do
+  begin
+    DayDate := today + i;
+    if DayFrames[i] = nil then
+    begin
+      DayFrames[i] := TDayFrame.Create(nil);
+      DayFrames[i].Parent := DaysScrollBox;
+      DayFrames[i].DetailsButton.OnClick := DayClick;
+      DayFrames[i].DayPeriodLabel.Text := DateToStr(DayDate);
+    end;
+    DayFrames[i].EventsBox.Clear;
+    for i1 := 0 to EventsArray.Length-1 do
+    begin
+      EventObject := EventsArray.O[i1];
+      StartObject := EventObject.O['start'];
+      if Trunc(StrToDateTime(StartObject.S['dateTime'],FormatSettings))=DayDate then
+      begin
+        ind := DayFrames[i].EventsBox.Items.Add(EventObject.S['summary']);
+        desc := EventObject.S['description'];
+        if desc.Contains('#lesson') then
+          DayFrames[i].EventsBox.Items[ind] := DayFrames[i].EventsBox.Items[ind]+'  '+
+            GetValueFromDescription(ClearDescFromTag(desc),'room')
+      end;
+    end;
+    DayFrames[i].Height := 103+DayFrames[i].EventsBox.Count*DayFrames[i].EventsBox.ItemHeight;
+  end;
+  WeekPeriodLabel.Text := DateToStr(today)+' - '+DateToStr(today+6);
+  SCalendar.UpdateActions;
+end;
+
+procedure TSCalendar.RefreshTokenTimerTimer(Sender: TObject);
+begin
+  try
+    GoogleClient.RefreshToken;
+  except
+  end;
+end;
+
+procedure TSCalendar.StartCalendarConnection;
+begin
+  WebBrowser.Url := GoogleClient.StartConnect;
+  WebBrowser.Visible:=true;
+  WebBrowser.BringToFront;
+end;
+
+procedure TSCalendar.ToTimerTimer(Sender: TObject);
+var
+  EventFrame: TEventTabFrame;
+begin
+  try
+    EventFrame := EventTabControl.ActiveTab.Children[0] as TEventTabFrame;
+    if now<StrToDate(EventFrame.StartTimeEdit.Text, FormatSettings) then
+    begin
+      EventFrame.TimeLeftEdit.Text := IntToStr(SecondsBetween(now,
+        StrToDateTime(EventFrame.StartTimeEdit.Text, FormatSettings)) div 3600)
+        + ':' + IntToStr(SecondsBetween(now,
+        StrToDateTime(EventFrame.StartTimeEdit.Text, FormatSettings)) mod 3600 div 60)
+        + ':' + IntToStr(SecondsBetween(now,
+        StrToDateTime(EventFrame.StartTimeEdit.Text, FormatSettings)) mod 3600 mod 60);
+    end
+    else
+     EventFrame.TimeLeftEdit.Text := '-';
+  except
+  end;
+end;
+
+procedure TSCalendar.UpdateCalendarMenu;
+var
+  Response: TStringStream;
+  JSONArray: ISuperArray;
+  JsonObject, CalendarInf: ISuperObject;
+  i: Integer;
+begin
+  Response := TStringStream.Create;
+  try
+    GoogleClient.Get('https://www.googleapis.com/calendar/v3/users/me/calendarList',Response);
+    //Response.SaveToFile('calendarlist.json');
+    JsonObject := SO(Response.DataString);
+    JSONArray := JsonObject['items'].AsArray;
+    CalendarList.Clear;
+    CalendarBox.Clear;
+    for I := 0 to JSONArray.Length-1 do
+    begin
+      CalendarInf := JSONArray.O[i];
+      CalendarList.Add(CalendarInf.S['summary']+'='+CalendarInf.S['id']);
+      CalendarBox.Items.Add(CalendarInf.S['summary']);
+    end;
+    finally
+      try
+        Response.Free;
+      except
+      end;
+    end;
+end;
+
+function BuildRequest(AStartDay, AEndDay: TDate): String;
+begin
+  Result := 'https://www.googleapis.com/calendar/v3/calendars/'+
+      HttpEncode(CalendarList.Values[SCalendar.CalendarBox.Selected.Text])
+      +'/events?singleEvents=true&orderBy=startTime';
+  Result := Result + '&timeMax=' + HttpEncode(
+      FormatDateTime('yyyy-MM-dd',AEndDay)
+      +'T23:59:59+00:00')+'&timeMin='+
+      HttpEncode(FormatDateTime('yyyy-MM-dd',AStartDay) + 'T00:00:00+00:00');
+end;
+
+procedure TSCalendar.UpdateButtonClick(Sender: TObject);
+begin
+  UpdateCalendarEvents(today,today+6);
+end;
+
+procedure TSCalendar.UpdateCalendarEvents(AStartDay, AEndDay: TDate);
+var
+  Response: TStringStream;
+  JSONArray: ISuperArray;
+  JsonObject, EventInf, DescriptionObject: ISuperObject;
+  stpos: Integer;
+  i: Integer;
+  RequestString, EventInfStr: String;
+begin
+  Response := TStringStream.Create;
+  try
+    RequestString := BuildRequest(AStartDay, AEndDay);
+    //ShowMessage(RequestString);
+    GoogleClient.Get(RequestString,Response);
+    JsonObject := SO(Response.DataString);
+    JSONArray := JsonObject['items'].AsArray;
+    for I := 0 to JSONArray.Length-1 do
+    begin
+      EventInf := JSONArray.O[i];
+      EventInfStr := EventInf.S['description'];
+      if EventInfStr.Contains('#lesson') and CalendarBox.Selected.Text.Contains('SC') then
+      begin
+        stpos := pos('#lesson',EventInfStr);
+        EventInfStr := EventInfStr.Remove(stpos-1,'#lesson'.Length-1);
+        DescriptionObject := SO(EventInfStr);
+        if (DescriptionObject.S['grade'] <> (ExtractGradeFromName(CalendarBox.Selected.Text)
+        +GradeBox.Selected.Text)) or
+        (DescriptionObject.S['major'] <> ProfileBox.Selected.Text) then
+          JSONArray.Delete(i);
+      end;
+    end;
+    EventsArray := SA(JSONArray.AsJson);
+  finally
+    try
+      Response.Free;
+    except
+    end;
+  end;
+end;
+
+procedure TSCalendar.OkButtonClick(Sender: TObject);
+var
+  ADay: TDate;
+begin
+  if CalendarBox.ItemIndex > -1 then
+    begin
+      BackButton.Text := 'Week';
+      BackButton.Visible := True;
+      ADay := today;
+      UpdateCalendarEvents(today,today+6);
+      LoadDayRepresentation(ADay);
+      MainTabControl.ActiveTab := MainTabControl.Tabs[1];
+      OptionList.Clear;
+      OptionList.Add('CalendarIndex='+IntToStr(CalendarBox.ItemIndex));
+      OptionList.Add('MajorIndex='+IntToStr(ProfileBox.ItemIndex));
+      OptionList.Add('GradeIndex='+IntToStr(GradeBox.ItemIndex));
+      OptionList.SaveToFile(GOptions);
+    end;
+end;
+
+procedure TSCalendar.OptionsButtonClick(Sender: TObject);
+begin
+  //UpdateCalendarMenu;
+  MainTabControl.ActiveTab := MainTabControl.Tabs[3];
+  BackButton.Visible := False;
+end;
+
+procedure TSCalendar.WebBrowserShouldStartLoadWithRequest(ASender: TObject;
+  const URL: string);
+var
+Fstr: String;
+begin
+  if URL.Contains('code=') then
+  begin
+    try
+      FStr := URL.Substring(pos('code=',URL)+'code='.Length-1);
+      GoogleClient.EndConnect(Fstr);
+      MainTabControl.ActiveTab := MainTabControl.Tabs[3];
+      WebBrowser.Visible := False;
+      GoogleClient.SaveToFile(GAccess);
+    except
+    end;
+  end;
+end;
+
+
+end.
