@@ -211,7 +211,7 @@ type
     procedure Assign(Source: TPersistent); override;
     procedure Parse(const AJSONString: string);
     property AccessToken: string read FAccessToken;
-    property RefreshToken: string read FRefreshToken;
+    property RefreshToken: string read FRefreshToken write FRefreshToken;
     property TokenType: string read FTokenType;
     property ExpiresTime: TDateTime read FExpiresTime;
     property ScopeParam: string read GetScopeStr;

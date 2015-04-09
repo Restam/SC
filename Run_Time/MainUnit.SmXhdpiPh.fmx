@@ -88,10 +88,7 @@ inherited SCalendar_SmXhdpiPh: TSCalendar_SmXhdpiPh
           inherited ButtonPanel: TPanel
             Size.Width = 250.000000000000000000
             inherited OkButton: TButton
-              Size.Width = 109.000000000000000000
-            end
-            inherited ReloginButton: TButton
-              Size.Width = 111.000000000000000000
+              Size.Width = 230.000000000000000000
             end
           end
           inherited ProfileBox: TComboBox

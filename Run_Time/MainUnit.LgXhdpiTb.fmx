@@ -88,10 +88,7 @@ inherited SCalendar_LgXhdpiTb: TSCalendar_LgXhdpiTb
           inherited ButtonPanel: TPanel
             Size.Width = 480.000000000000000000
             inherited OkButton: TButton
-              Size.Width = 235.000000000000000000
-            end
-            inherited ReloginButton: TButton
-              Size.Width = 215.000000000000000000
+              Size.Width = 460.000000000000000000
             end
           end
           inherited ProfileBox: TComboBox

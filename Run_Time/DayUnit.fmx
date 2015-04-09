@@ -1,5 +1,4 @@
 object DayFrame: TDayFrame
-  Align = Top
   Padding.Left = 20.000000000000000000
   Padding.Top = 20.000000000000000000
   Padding.Right = 20.000000000000000000
