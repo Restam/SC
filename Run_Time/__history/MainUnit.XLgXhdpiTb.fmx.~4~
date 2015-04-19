@@ -1,0 +1,116 @@
+inherited SCalendar_XLgXhdpiTb: TSCalendar_XLgXhdpiTb
+  ClientHeight = 1255
+  ClientWidth = 800
+  DesignerMasterStyle = 3
+  inherited MenuPanel: TPanel
+    Size.Width = 800.000000000000000000
+    inherited OptionsButton: TSpeedButton
+      Position.X = 752.000000000000000000
+    end
+    inherited DateLabel: TLabel
+      Size.Width = 752.000000000000000000
+    end
+    inherited BackButton: TButton
+      StyledSettings = [Family, Size, Style]
+    end
+    inherited UpdateButton: TButton
+      Position.X = 704.000000000000000000
+      Visible = False
+    end
+  end
+  inherited MainPanel: TPanel
+    Size.Width = 800.000000000000000000
+    Size.Height = 1207.000000000000000000
+    inherited MainTabControl: TTabControl
+      Size.Width = 800.000000000000000000
+      Size.Height = 1174.000000000000000000
+      inherited WeekTab: TTabItem
+        inherited WeekPeriodLabel: TLabel
+          Size.Width = 780.000000000000000000
+        end
+        inherited DaysScrollBox: TFramedVertScrollBox
+          Margins.Left = 10.000000000000000000
+          Margins.Right = 10.000000000000000000
+          Size.Width = 780.000000000000000000
+          Size.Height = 1116.000000000000000000
+        end
+      end
+      inherited DayTab: TTabItem
+        inherited DayPeriodLabel: TLabel
+          Size.Width = 780.000000000000000000
+        end
+        inherited EventsBox: TListBox
+          Size.Width = 780.000000000000000000
+          Size.Height = 1116.000000000000000000
+        end
+      end
+      inherited EventTab: TTabItem
+        inherited EventTabFrame: TEventTabFrame
+          Size.Width = 800.000000000000000000
+          Size.Height = 1174.000000000000000000
+          inherited EndTimeEdit: TEdit
+            Position.Y = 1058.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+          inherited EndTimeLabel: TLabel
+            Position.Y = 1031.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+          inherited StartTimeEdit: TEdit
+            Position.Y = 989.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+          inherited StartTimeLabel: TLabel
+            Position.Y = 967.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+          inherited SummaryLabel: TLabel
+            Size.Width = 800.000000000000000000
+            Size.Height = 962.000000000000000000
+          end
+          inherited TimeLeftLabel: TLabel
+            Position.Y = 1100.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+          inherited TimeLeftEdit: TEdit
+            Position.Y = 1127.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+        end
+      end
+      inherited SettingsTab: TTabItem
+        inherited SettingsPanel: TPanel
+          Position.Y = 465.000000000000000000
+          Size.Width = 800.000000000000000000
+          inherited CalendarBox: TComboBox
+            Size.Width = 780.000000000000000000
+          end
+          inherited ChooseCalendarLabel: TLabel
+            Size.Width = 780.000000000000000000
+          end
+          inherited ButtonPanel: TPanel
+            Size.Width = 800.000000000000000000
+            inherited OkButton: TButton
+              Size.Width = 780.000000000000000000
+            end
+          end
+          inherited ProfileBox: TComboBox
+            Size.Width = 780.000000000000000000
+          end
+          inherited GradeBox: TComboBox
+            Size.Width = 780.000000000000000000
+          end
+          inherited ChangeCalendarIndicator: TAniIndicator
+            Enabled = True
+            Scale.X = 0.000000000000000000
+            Scale.Y = 0.000000000000000000
+          end
+        end
+      end
+    end
+    inherited BrendLabel: TLabel
+      Position.Y = 1179.000000000000000000
+      Size.Width = 790.000000000000000000
+    end
+  end
+end

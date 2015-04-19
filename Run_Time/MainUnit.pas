@@ -40,6 +40,7 @@ type
     BackButton: TButton;
     UpdateButton: TButton;
     EventTabFrame: TEventTabFrame;
+    AniIndicator1: TAniIndicator;
     procedure FormCreate(Sender: TObject);
     procedure OkButtonClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -56,7 +57,7 @@ type
   private
     { Private declarations }
     procedure UpdateCalendarMenu;
-    procedure UpdateCalendarEvents(AStartDay, AEndDay: TDate);
+    procedure UpdateCalendarEvents(AStartDay, AEndDay: TDate; ACheck: Boolean);
     procedure SaveOptions;
     procedure InitOptions;
     function ExtractGradeFromName(AName: String): String;
@@ -66,6 +67,7 @@ type
     function GetValueFromDescription(ADescription,AName: String): String;
     procedure LoadDayRepresentation(ADay: TDate);
     procedure DayClick(Sender: TObject);
+    function ParseValues(AEventsArray: ISuperArray; AName: String): TStrings;
   public
     { Public declarations }
   end;
@@ -121,8 +123,21 @@ procedure TSCalendar.CalendarBoxChange(Sender: TObject);
 begin
   if CalendarBox.Selected.Text.Contains('SC') then
   begin
-    ProfileBox.Enabled := True;
+    AniIndicator1.Visible := True;
+    Application.ProcessMessages;
+    SCalendar.UpdateActions;
+    UpdateCalendarEvents(today,today+6,false);
+    Application.ProcessMessages;
+    GradeBox.Items.Free;
+    GradeBox.Items := ParseValues(EventsArray,'grade');
     GradeBox.Enabled := True;
+    Application.ProcessMessages;
+    ProfileBox.Items.Free;
+    ProfileBox.Items := ParseValues(EventsArray,'major');
+    ProfileBox.Enabled := True;
+    Application.ProcessMessages;
+    AniIndicator1.Visible := False;
+    SCalendar.UpdateActions;
   end
   else
   begin
@@ -182,12 +197,22 @@ begin
   GoogleClient.TokenInfo.RefreshToken := '1/-YBnK9J1HfP2t6v1Yv19ji32sPDAJQLCZL7Rn5MD23gMEudVrK5jSpoR30zcRFq6';
   try
     GoogleClient.RefreshToken;
+    InitOptions;
   except
-    ShowMessage('Lost internet connection.'
-      + ' Please check your connection and open app again.');
-    SCalendar.Close;
+    MessageDlg('Internet connection lost.'
+      + ' Please check your connection and open app again.',
+       System.UITypes.TMsgDlgType.mtError,
+    [
+      System.UITypes.TMsgDlgBtn.mbYes
+    ], 0,
+    procedure(const AResult: TModalResult)
+    begin
+      case AResult of
+        mrYes:
+          Application.Terminate;
+      end;
+    end);
   end;
-  InitOptions;
 end;
 
 procedure TSCalendar.FormDestroy(Sender: TObject);
@@ -238,19 +263,21 @@ begin
         ProfileBox.ItemIndex := StrToInt(OptionList.Values['MajorIndex']);
         GradeBox.ItemIndex := StrToInt(OptionList.Values['GradeIndex']);
       end;
-      UpdateCalendarEvents(today,today+6);
+      UpdateCalendarEvents(today,today+6,True);
       LoadDayRepresentation(today);
       BackButton.Text := 'Week';
       BackButton.Visible := True;
       MainTabControl.ActiveTab := MainTabControl.Tabs[1];
     except
       UpdateCalendarMenu;
+      UpdateButton.Visible := False;
       MainTabControl.ActiveTab := MainTabControl.Tabs[3];
     end;
   end
   else
   begin
     UpdateCalendarMenu;
+    UpdateButton.Visible := False;
     MainTabControl.ActiveTab := MainTabControl.Tabs[3];
   end;
 end;
@@ -367,6 +394,7 @@ begin
   SCalendar.UpdateActions;
 end;
 
+
 procedure TSCalendar.RefreshTokenTimerTimer(Sender: TObject);
 begin
   try
@@ -383,7 +411,7 @@ begin
   BackButton.Text := 'Week';
   BackButton.Visible := True;
   ADay := today;
-  UpdateCalendarEvents(today,today+6);
+  UpdateCalendarEvents(today,today+6,True);
   LoadDayRepresentation(ADay);
   MainTabControl.ActiveTab := MainTabControl.Tabs[1];
   if OptionList = nil then
@@ -456,12 +484,12 @@ end;
 procedure TSCalendar.UpdateButtonClick(Sender: TObject);
 begin
   try
-    UpdateCalendarEvents(today,today+6);
+    UpdateCalendarEvents(today,today+6,True);
   except
   end;
 end;
 
-procedure TSCalendar.UpdateCalendarEvents(AStartDay, AEndDay: TDate);
+procedure TSCalendar.UpdateCalendarEvents(AStartDay, AEndDay: TDate; ACheck: Boolean);
 var
   Response: TStringStream;
   JSONArray: ISuperArray;
@@ -481,15 +509,15 @@ begin
     begin
       EventInf := JSONArray.O[i];
       EventInfStr := EventInf.S['description'];
-      if EventInfStr.Contains('#lesson') and CalendarBox.Selected.Text.Contains('SC') then
+      if EventInfStr.Contains('#lesson') and CalendarBox.Selected.Text.Contains('SC') and ACheck then
       begin
         try
           stpos := pos('#lesson',EventInfStr);
           EventInfStr := EventInfStr.Remove(stpos-1,'#lesson'.Length);
           EventInfStr := ReplaceAllChars(EventInfStr,';',',');
           DescriptionObject := SO(EventInfStr);
-          if (DescriptionObject.S['grade'] <> (ExtractGradeFromName(CalendarBox.Selected.Text)
-          +GradeBox.Selected.Text)) or
+          if (DescriptionObject.S['grade'] <>
+          GradeBox.Selected.Text) or
           (DescriptionObject.S['major'] <> ProfileBox.Selected.Text) then
             JSONArray.Delete(i);
         except
@@ -517,6 +545,7 @@ begin
     end
     else
       SaveOptions;
+    UpdateButton.Visible := True;
   end;
 end;
 
@@ -525,6 +554,30 @@ begin
   //UpdateCalendarMenu;
   MainTabControl.ActiveTab := MainTabControl.Tabs[3];
   BackButton.Visible := False;
+  UpdateButton.Visible := False;
+end;
+
+function TSCalendar.ParseValues(AEventsArray: ISuperArray; AName: String): TStrings;
+var
+ i: Integer;
+ s: String;
+ X: ISuperObject;
+begin
+  Result := TStringList.Create;
+  for I := 0 to AEventsArray.Length-1 do
+  begin
+    X := AEventsArray.O[i];
+    s := X.S['description'];
+    if s.Contains('#lesson') then
+    begin
+      s := ClearDescFromTag(s);
+      s := ReplaceAllChars(s,';',',');
+      X := SO(s);
+      s := X.S[AName];
+      if (Result.IndexOf(s) = -1) then
+        Result.Add(s);
+    end;
+  end;
 end;
 
 end.

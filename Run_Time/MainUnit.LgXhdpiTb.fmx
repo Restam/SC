@@ -8,13 +8,14 @@ inherited SCalendar_LgXhdpiTb: TSCalendar_LgXhdpiTb
       Position.X = 432.000000000000000000
     end
     inherited DateLabel: TLabel
-      Size.Width = 384.000000000000000000
+      Size.Width = 432.000000000000000000
     end
     inherited BackButton: TButton
       StyledSettings = [Family, Size, Style]
     end
     inherited UpdateButton: TButton
       Position.X = 384.000000000000000000
+      Visible = False
     end
   end
   inherited MainPanel: TPanel
@@ -28,8 +29,10 @@ inherited SCalendar_LgXhdpiTb: TSCalendar_LgXhdpiTb
           Size.Width = 460.000000000000000000
         end
         inherited DaysScrollBox: TFramedVertScrollBox
+          Margins.Left = 10.000000000000000000
+          Margins.Right = 10.000000000000000000
           Size.Width = 460.000000000000000000
-          Size.Height = 705.000000000000000000
+          Size.Height = 690.000000000000000000
         end
       end
       inherited DayTab: TTabItem
@@ -38,7 +41,7 @@ inherited SCalendar_LgXhdpiTb: TSCalendar_LgXhdpiTb
         end
         inherited EventsBox: TListBox
           Size.Width = 460.000000000000000000
-          Size.Height = 705.000000000000000000
+          Size.Height = 690.000000000000000000
         end
       end
       inherited EventTab: TTabItem
@@ -46,31 +49,31 @@ inherited SCalendar_LgXhdpiTb: TSCalendar_LgXhdpiTb
           Size.Width = 480.000000000000000000
           Size.Height = 748.000000000000000000
           inherited EndTimeEdit: TEdit
-            Position.Y = 647.000000000000000000
+            Position.Y = 632.000000000000000000
             Size.Width = 450.000000000000000000
           end
           inherited EndTimeLabel: TLabel
-            Position.Y = 620.000000000000000000
+            Position.Y = 605.000000000000000000
             Size.Width = 450.000000000000000000
           end
           inherited StartTimeEdit: TEdit
-            Position.Y = 583.000000000000000000
+            Position.Y = 563.000000000000000000
             Size.Width = 450.000000000000000000
           end
           inherited StartTimeLabel: TLabel
-            Position.Y = 561.000000000000000000
+            Position.Y = 541.000000000000000000
             Size.Width = 450.000000000000000000
           end
           inherited SummaryLabel: TLabel
             Size.Width = 480.000000000000000000
-            Size.Height = 556.000000000000000000
+            Size.Height = 536.000000000000000000
           end
           inherited TimeLeftLabel: TLabel
-            Position.Y = 684.000000000000000000
+            Position.Y = 674.000000000000000000
             Size.Width = 450.000000000000000000
           end
           inherited TimeLeftEdit: TEdit
-            Position.Y = 711.000000000000000000
+            Position.Y = 701.000000000000000000
             Size.Width = 450.000000000000000000
           end
         end
