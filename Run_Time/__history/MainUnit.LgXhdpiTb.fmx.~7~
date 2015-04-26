@@ -1,0 +1,138 @@
+inherited SCalendar_LgXhdpiTb: TSCalendar_LgXhdpiTb
+  ClientHeight = 829
+  ClientWidth = 480
+  DesignerMasterStyle = 3
+  inherited MenuPanel: TPanel
+    Size.Width = 480.000000000000000000
+    inherited OptionsButton: TSpeedButton
+      Position.X = 432.000000000000000000
+    end
+    inherited DateLabel: TLabel
+      Size.Width = 384.000000000000000000
+    end
+    inherited UpdateButton: TButton
+      Position.X = 384.000000000000000000
+    end
+  end
+  inherited MainPanel: TPanel
+    Size.Width = 480.000000000000000000
+    Size.Height = 781.000000000000000000
+    inherited MainTabControl: TTabControl
+      Size.Width = 480.000000000000000000
+      Size.Height = 748.000000000000000000
+      TabIndex = 3
+      inherited WeekTab: TTabItem
+        inherited WeekPeriodLabel: TLabel
+          Size.Width = 460.000000000000000000
+        end
+        inherited DaysScrollBox: TFramedVertScrollBox
+          Size.Width = 480.000000000000000000
+          Size.Height = 690.000000000000000000
+        end
+      end
+      inherited DayTab: TTabItem
+        inherited DayPeriodLabel: TLabel
+          Size.Width = 460.000000000000000000
+        end
+        inherited EventsBox: TListBox
+          Size.Width = 460.000000000000000000
+          Size.Height = 690.000000000000000000
+        end
+      end
+      inherited EventTab: TTabItem
+        IsSelected = False
+        inherited EventTabFrame: TEventTabFrame
+          Size.Width = 480.000000000000000000
+          Size.Height = 748.000000000000000000
+          inherited EndTimeLabel: TLabel
+            Margins.Top = 10.000000000000000000
+            Margins.Bottom = 10.000000000000000000
+            Position.Y = 601.000000000000000000
+            Size.Width = 450.000000000000000000
+            Size.Height = 29.000000000000000000
+            TextSettings.Font.Size = 24.000000000000000000
+          end
+          inherited LessonPanel: TPanel
+            Position.Y = 440.000000000000000000
+            Size.Width = 480.000000000000000000
+            Size.Height = 102.000000000000000000
+            inherited RoomLabel: TLabel
+              Margins.Top = 10.000000000000000000
+              Margins.Bottom = 10.000000000000000000
+              Position.Y = 14.000000000000000000
+              Size.Width = 450.000000000000000000
+              Size.Height = 29.000000000000000000
+              TextSettings.Font.Size = 24.000000000000000000
+            end
+            inherited TeacherLabel: TLabel
+              Margins.Top = 10.000000000000000000
+              Margins.Bottom = 10.000000000000000000
+              Position.Y = 63.000000000000000000
+              Size.Width = 450.000000000000000000
+              Size.Height = 29.000000000000000000
+              TextSettings.Font.Size = 24.000000000000000000
+            end
+          end
+          inherited StartTimeLabel: TLabel
+            Margins.Top = 10.000000000000000000
+            Margins.Bottom = 10.000000000000000000
+            Position.Y = 552.000000000000000000
+            Size.Width = 450.000000000000000000
+            Size.Height = 29.000000000000000000
+            TextSettings.Font.Size = 24.000000000000000000
+          end
+          inherited SummaryLabel: TLabel
+            Size.Width = 480.000000000000000000
+            Size.Height = 542.000000000000000000
+            TextSettings.Font.Size = 32.000000000000000000
+          end
+          inherited TimeLeftLabel: TLabel
+            Margins.Top = 10.000000000000000000
+            Margins.Bottom = 10.000000000000000000
+            Position.Y = 650.000000000000000000
+            Size.Width = 450.000000000000000000
+            Size.Height = 29.000000000000000000
+            TextSettings.Font.Size = 24.000000000000000000
+          end
+          inherited TimeLeftEndLabel: TLabel
+            Margins.Top = 10.000000000000000000
+            Margins.Bottom = 20.000000000000000000
+            Position.Y = 699.000000000000000000
+            Size.Width = 450.000000000000000000
+            Size.Height = 29.000000000000000000
+            TextSettings.Font.Size = 24.000000000000000000
+          end
+        end
+      end
+      inherited SettingsTab: TTabItem
+        IsSelected = True
+        inherited SettingsPanel: TPanel
+          Position.Y = 252.000000000000000000
+          Size.Width = 480.000000000000000000
+          inherited CalendarBox: TComboBox
+            Size.Width = 460.000000000000000000
+          end
+          inherited ChooseCalendarLabel: TLabel
+            Size.Width = 460.000000000000000000
+          end
+          inherited ButtonPanel: TPanel
+            Size.Width = 480.000000000000000000
+            inherited OkButton: TButton
+              Size.Width = 460.000000000000000000
+            end
+          end
+          inherited ProfileBox: TComboBox
+            Size.Width = 460.000000000000000000
+          end
+          inherited GradeBox: TComboBox
+            Size.Width = 460.000000000000000000
+          end
+        end
+      end
+    end
+    inherited BrendLabel: TLabel
+      Position.Y = 753.000000000000000000
+      Size.Width = 470.000000000000000000
+    end
+  end
+end

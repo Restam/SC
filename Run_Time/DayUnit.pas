@@ -9,10 +9,9 @@ uses
 
 type
   TDayFrame = class(TFrame)
-    DayPeriodLabel: TLabel;
     EventsBox: TListBox;
     TopPanel: TPanel;
-    DetailsButton: TButton;
+    DayPeriodButton: TButton;
   private
     { Private declarations }
   public

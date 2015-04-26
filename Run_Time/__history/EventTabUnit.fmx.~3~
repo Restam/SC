@@ -1,0 +1,207 @@
+object EventTabFrame: TEventTabFrame
+  Align = Client
+  Size.Width = 275.000000000000000000
+  Size.Height = 406.000000000000000000
+  Size.PlatformDefault = False
+  TabOrder = 0
+  object EndTimeEdit: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Bottom
+    TabOrder = 7
+    ReadOnly = True
+    Position.X = 15.000000000000000000
+    Position.Y = 242.000000000000000000
+    Margins.Left = 15.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 15.000000000000000000
+    Margins.Bottom = 5.000000000000000000
+    Size.Width = 245.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object EndTimeLabel: TLabel
+    Align = Bottom
+    AutoSize = True
+    StyledSettings = [Family, Style, FontColor]
+    Margins.Left = 15.000000000000000000
+    Margins.Right = 15.000000000000000000
+    Position.X = 15.000000000000000000
+    Position.Y = 218.000000000000000000
+    Size.Width = 245.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 14.000000000000000000
+    TextSettings.WordWrap = False
+    Text = 'End Time'
+  end
+  object LessonPanel: TPanel
+    Align = Bottom
+    Position.Y = 81.000000000000000000
+    Size.Width = 275.000000000000000000
+    Size.Height = 127.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    TabOrder = 9
+    object RoomEdit: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Bottom
+      TabOrder = 0
+      ReadOnly = True
+      Position.X = 15.000000000000000000
+      Position.Y = 24.000000000000000000
+      Margins.Left = 15.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 15.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Size.Width = 245.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object RoomLabel: TLabel
+      Align = Bottom
+      AutoSize = True
+      StyledSettings = [Family, Style, FontColor]
+      Margins.Left = 15.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 15.000000000000000000
+      Position.X = 15.000000000000000000
+      Size.Width = 245.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 14.000000000000000000
+      TextSettings.WordWrap = False
+      Text = 'Room'
+    end
+    object TeacherEdit: TEdit
+      Touch.InteractiveGestures = [LongTap, DoubleTap]
+      Align = Bottom
+      TabOrder = 2
+      ReadOnly = True
+      Position.X = 15.000000000000000000
+      Position.Y = 90.000000000000000000
+      Margins.Left = 15.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 15.000000000000000000
+      Margins.Bottom = 5.000000000000000000
+      Size.Width = 245.000000000000000000
+      Size.Height = 32.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object TeacherLabel: TLabel
+      Align = Bottom
+      AutoSize = True
+      StyledSettings = [Family, Style, FontColor]
+      Margins.Left = 15.000000000000000000
+      Margins.Top = 5.000000000000000000
+      Margins.Right = 15.000000000000000000
+      Position.X = 15.000000000000000000
+      Position.Y = 66.000000000000000000
+      Size.Width = 245.000000000000000000
+      Size.Height = 19.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.Font.Size = 14.000000000000000000
+      TextSettings.WordWrap = False
+      Text = 'Teacher'
+    end
+  end
+  object StartTimeEdit: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Bottom
+    TabOrder = 8
+    ReadOnly = True
+    Position.X = 15.000000000000000000
+    Position.Y = 181.000000000000000000
+    Margins.Left = 15.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 15.000000000000000000
+    Margins.Bottom = 5.000000000000000000
+    Size.Width = 245.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object StartTimeLabel: TLabel
+    Align = Bottom
+    AutoSize = True
+    StyledSettings = [Family, Style, FontColor]
+    Margins.Left = 15.000000000000000000
+    Margins.Right = 15.000000000000000000
+    Position.X = 15.000000000000000000
+    Position.Y = 157.000000000000000000
+    Size.Width = 245.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 14.000000000000000000
+    TextSettings.WordWrap = False
+    Text = 'Start Time'
+  end
+  object SummaryLabel: TLabel
+    Align = Client
+    StyledSettings = [Family, Style, FontColor]
+    Size.Width = 275.000000000000000000
+    Size.Height = 157.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 24.000000000000000000
+    TextSettings.HorzAlign = Center
+    Text = 'Summary'
+  end
+  object TimeLeftLabel: TLabel
+    Align = Bottom
+    AutoSize = True
+    StyledSettings = [Family, Style, FontColor]
+    Margins.Left = 15.000000000000000000
+    Margins.Right = 15.000000000000000000
+    Position.X = 15.000000000000000000
+    Position.Y = 279.000000000000000000
+    Size.Width = 245.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 14.000000000000000000
+    TextSettings.WordWrap = False
+    Text = 'Starts after'
+  end
+  object TimeLeftEdit: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Bottom
+    TabOrder = 6
+    ReadOnly = True
+    Position.X = 15.000000000000000000
+    Position.Y = 303.000000000000000000
+    Margins.Left = 15.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 15.000000000000000000
+    Margins.Bottom = 5.000000000000000000
+    Size.Width = 245.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object TimeLeftEndEdit: TEdit
+    Touch.InteractiveGestures = [LongTap, DoubleTap]
+    Align = Bottom
+    TabOrder = 5
+    ReadOnly = True
+    Position.X = 15.000000000000000000
+    Position.Y = 364.000000000000000000
+    Margins.Left = 15.000000000000000000
+    Margins.Top = 5.000000000000000000
+    Margins.Right = 15.000000000000000000
+    Margins.Bottom = 10.000000000000000000
+    Size.Width = 245.000000000000000000
+    Size.Height = 32.000000000000000000
+    Size.PlatformDefault = False
+  end
+  object TimeLeftEndLabel: TLabel
+    Align = Bottom
+    AutoSize = True
+    StyledSettings = [Family, Style, FontColor]
+    Margins.Left = 15.000000000000000000
+    Margins.Right = 15.000000000000000000
+    Position.X = 15.000000000000000000
+    Position.Y = 340.000000000000000000
+    Size.Width = 245.000000000000000000
+    Size.Height = 19.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 14.000000000000000000
+    TextSettings.WordWrap = False
+    Text = 'Ends after'
+  end
+end

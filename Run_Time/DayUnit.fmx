@@ -16,7 +16,9 @@ object DayFrame: TDayFrame
     Size.Width = 155.000000000000000000
     Size.Height = 93.000000000000000000
     Size.PlatformDefault = False
+    StyleLookup = 'transparentlistboxstyle'
     TabOrder = 1
+    AlternatingRowBackground = True
     CanFocus = False
     DisableFocusEffect = True
     ItemHeight = 30.000000000000000000
@@ -35,23 +37,14 @@ object DayFrame: TDayFrame
     Size.Height = 48.000000000000000000
     Size.PlatformDefault = False
     TabOrder = 2
-    object DayPeriodLabel: TLabel
+    object DayPeriodButton: TButton
       Align = Client
-      Size.Width = 97.000000000000000000
+      Size.Width = 145.000000000000000000
       Size.Height = 48.000000000000000000
       Size.PlatformDefault = False
-      TextSettings.HorzAlign = Center
-      Text = 'DayPeriodLabel'
-    end
-    object DetailsButton: TButton
-      Align = Right
-      Position.X = 97.000000000000000000
-      Size.Width = 48.000000000000000000
-      Size.Height = 48.000000000000000000
-      Size.PlatformDefault = False
-      StyleLookup = 'pagecurltoolbutton'
+      StyleLookup = 'toolbutton'
       TabOrder = 1
-      Text = 'DetailsButton'
+      Text = 'DayPeriodButton'
     end
   end
 end

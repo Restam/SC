@@ -2104,16 +2104,6 @@ object _1: TLayout
       Text = 'Text'
       WordWrap = False
     end
-    object TCheckBox
-      StyleName = 'check'
-      Align = alLeft
-      Width = 20.000000000000000000
-      Height = 24.000000000000000000
-      TabOrder = 1
-      IsChecked = False
-      CanFocus = False
-      DisableFocusEffect = True
-    end
   end
   object TLayout
     StyleName = 'tabitemstyle'

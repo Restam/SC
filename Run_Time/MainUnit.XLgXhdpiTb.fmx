@@ -15,6 +15,7 @@ inherited SCalendar_XLgXhdpiTb: TSCalendar_XLgXhdpiTb
     end
     inherited UpdateButton: TButton
       Position.X = 704.000000000000000000
+      Position.Y = 2.000000000000000000
       Visible = False
     end
   end
@@ -42,6 +43,7 @@ inherited SCalendar_XLgXhdpiTb: TSCalendar_XLgXhdpiTb
         inherited EventsBox: TListBox
           Size.Width = 780.000000000000000000
           Size.Height = 1116.000000000000000000
+          StyleLookup = 'transparentlistboxstyle'
         end
       end
       inherited EventTab: TTabItem
@@ -66,7 +68,7 @@ inherited SCalendar_XLgXhdpiTb: TSCalendar_XLgXhdpiTb
           end
           inherited SummaryLabel: TLabel
             Size.Width = 800.000000000000000000
-            Size.Height = 962.000000000000000000
+            Size.Height = 896.000000000000000000
           end
           inherited TimeLeftLabel: TLabel
             Position.Y = 1100.000000000000000000
@@ -74,6 +76,14 @@ inherited SCalendar_XLgXhdpiTb: TSCalendar_XLgXhdpiTb
           end
           inherited TimeLeftEdit: TEdit
             Position.Y = 1127.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+          inherited TimeLeftEndEdit: TEdit
+            Position.Y = 901.000000000000000000
+            Size.Width = 770.000000000000000000
+          end
+          inherited TimeLeftEndLabel: TLabel
+            Position.Y = 938.000000000000000000
             Size.Width = 770.000000000000000000
           end
         end

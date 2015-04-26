@@ -9,18 +9,14 @@ uses
 
 type
   TEventTabFrame = class(TFrame)
-    EndTimeEdit: TEdit;
     EndTimeLabel: TLabel;
     LessonPanel: TPanel;
-    RoomEdit: TEdit;
     RoomLabel: TLabel;
-    TeacherEdit: TEdit;
     TeacherLabel: TLabel;
-    StartTimeEdit: TEdit;
     StartTimeLabel: TLabel;
     SummaryLabel: TLabel;
     TimeLeftLabel: TLabel;
-    TimeLeftEdit: TEdit;
+    TimeLeftEndLabel: TLabel;
   private
     { Private declarations }
   public
