@@ -285,6 +285,7 @@ begin
       OptionList.LoadFromFile(GOptions);
       UpdateCalendarMenu;
       CalendarBox.ItemIndex := StrToInt(OptionList.Values['CalendarIndex']);
+      CalendarBoxChange(Self);
       if CalendarBox.Selected.Text.Contains('SC') then
       begin
         ProfileBox.ItemIndex := StrToInt(OptionList.Values['MajorIndex']);
@@ -365,6 +366,7 @@ begin
   EventTabFrame.EndTimeLabel.Text := 'End Time: ' + EndObject.S['dateTime'];
   EventTabFrame.SummaryLabel.Text := EventObject.S['summary'];
   desc := EventObject.S['description'];
+  ShowMessage(desc);
   if desc.Contains('#lesson') then
   begin
     EventTabFrame.LessonPanel.Visible := True;
@@ -392,7 +394,7 @@ begin
     begin
       DayFrames[i] := TDayFrame.Create(DaysScrollBox);
       DayFrames[i].Name := 'DayFrame'+IntToStr(i);
-      DayFrames[i].EventsBox.StyleLookup := 'transparentlistboxstyle';
+      DayFrames[i].EventsBox.StyleLookup := 'listboxstyle';
       DayFrames[i].Parent := DaysScrollBox;
       DayFrames[i].Position.Y := StartY;
       DayFrames[i].Position.X := 0;
@@ -575,9 +577,8 @@ begin
           EventInfStr := EventInfStr.Remove(stpos-1,'#lesson'.Length);
           EventInfStr := ReplaceAllChars(EventInfStr,';',',');
           DescriptionObject := SO(EventInfStr);
-          if (DescriptionObject.S['grade'] <>
-          GradeBox.Selected.Text) or
-          (DescriptionObject.S['major'] <> ProfileBox.Selected.Text) then
+          if (DescriptionObject.S['grade'] <> GradeBox.Items[GradeBox.ItemIndex]) or
+          (DescriptionObject.S['major'] <> ProfileBox.Items[ProfileBox.ItemIndex]) then
             JSONArray.Delete(i);
         except
           JSONArray.Delete(i);

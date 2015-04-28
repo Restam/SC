@@ -285,6 +285,7 @@ begin
       OptionList.LoadFromFile(GOptions);
       UpdateCalendarMenu;
       CalendarBox.ItemIndex := StrToInt(OptionList.Values['CalendarIndex']);
+      CalendarBoxChange(Self);
       if CalendarBox.Selected.Text.Contains('SC') then
       begin
         ProfileBox.ItemIndex := StrToInt(OptionList.Values['MajorIndex']);
@@ -365,6 +366,7 @@ begin
   EventTabFrame.EndTimeLabel.Text := 'End Time: ' + EndObject.S['dateTime'];
   EventTabFrame.SummaryLabel.Text := EventObject.S['summary'];
   desc := EventObject.S['description'];
+  ShowMessage(desc);
   if desc.Contains('#lesson') then
   begin
     EventTabFrame.LessonPanel.Visible := True;
@@ -564,7 +566,7 @@ begin
     GoogleClient.Get(RequestString,Response);
     JsonObject := SO(Response.DataString);
     JSONArray := JsonObject['items'].AsArray;
-    for I := 0 to JSONArray.Length-1 do
+    while i < (JSONArray.Length-1) do
     begin
       EventInf := JSONArray.O[i];
       EventInfStr := EventInf.S['description'];
@@ -575,9 +577,8 @@ begin
           EventInfStr := EventInfStr.Remove(stpos-1,'#lesson'.Length);
           EventInfStr := ReplaceAllChars(EventInfStr,';',',');
           DescriptionObject := SO(EventInfStr);
-          if (DescriptionObject.S['grade'] <>
-          GradeBox.Selected.Text) or
-          (DescriptionObject.S['major'] <> ProfileBox.Selected.Text) then
+          if ((DescriptionObject.S['grade'] <> GradeBox.Items[GradeBox.ItemIndex]) or
+          (DescriptionObject.S['major'] <> ProfileBox.Items[ProfileBox.ItemIndex])) then
             JSONArray.Delete(i);
         except
           JSONArray.Delete(i);

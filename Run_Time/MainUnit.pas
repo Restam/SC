@@ -561,11 +561,11 @@ begin
   Response := TStringStream.Create;
   try
     RequestString := BuildRequest(AStartDay, AEndDay);
-    //ShowMessage(RequestString);
     GoogleClient.Get(RequestString,Response);
     JsonObject := SO(Response.DataString);
     JSONArray := JsonObject['items'].AsArray;
-    for I := 0 to JSONArray.Length-1 do
+    i := 0;
+    while i < (JSONArray.Length-1) do
     begin
       EventInf := JSONArray.O[i];
       EventInfStr := EventInf.S['description'];
@@ -576,21 +576,21 @@ begin
           EventInfStr := EventInfStr.Remove(stpos-1,'#lesson'.Length);
           EventInfStr := ReplaceAllChars(EventInfStr,';',',');
           DescriptionObject := SO(EventInfStr);
-          if (DescriptionObject.S['grade'] <>
-          GradeBox.Selected.Text) or
-          (DescriptionObject.S['major'] <> ProfileBox.Selected.Text) then
-            JSONArray.Delete(i);
+          if ((DescriptionObject.S['grade'] <> GradeBox.Items[GradeBox.ItemIndex]) or
+          (DescriptionObject.S['major'] <> ProfileBox.Items[ProfileBox.ItemIndex])) then
+            JSONArray.Delete(i)
+          else
+            i := i + 1;
         except
           JSONArray.Delete(i);
         end;
-      end;
+      end
+      else
+       i := i + 1;
     end;
     EventsArray := SA(JSONArray.AsJson);
   finally
-    try
-      Response.Free;
-    except
-    end;
+    Response.Free;
   end;
 end;
 
