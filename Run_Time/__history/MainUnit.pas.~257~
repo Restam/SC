@@ -366,7 +366,6 @@ begin
   EventTabFrame.EndTimeLabel.Text := 'End Time: ' + EndObject.S['dateTime'];
   EventTabFrame.SummaryLabel.Text := EventObject.S['summary'];
   desc := EventObject.S['description'];
-  ShowMessage(desc);
   if desc.Contains('#lesson') then
   begin
     EventTabFrame.LessonPanel.Visible := True;
@@ -562,7 +561,6 @@ begin
   Response := TStringStream.Create;
   try
     RequestString := BuildRequest(AStartDay, AEndDay);
-    //ShowMessage(RequestString);
     GoogleClient.Get(RequestString,Response);
     JsonObject := SO(Response.DataString);
     JSONArray := JsonObject['items'].AsArray;
@@ -578,8 +576,8 @@ begin
           EventInfStr := EventInfStr.Remove(stpos-1,'#lesson'.Length);
           EventInfStr := ReplaceAllChars(EventInfStr,';',',');
           DescriptionObject := SO(EventInfStr);
-          if ((DescriptionObject.S['grade'] <> GradeBox.Items[GradeBox.ItemIndex]) or
-          (DescriptionObject.S['major'] <> ProfileBox.Items[ProfileBox.ItemIndex])) then
+          if ((not DescriptionObject.S['grade'].Contains(GradeBox.Items[GradeBox.ItemIndex])) or
+          (not DescriptionObject.S['major'].Contains(ProfileBox.Items[ProfileBox.ItemIndex]))) then
             JSONArray.Delete(i)
           else
             i := i + 1;
@@ -592,10 +590,7 @@ begin
     end;
     EventsArray := SA(JSONArray.AsJson);
   finally
-    try
-      Response.Free;
-    except
-    end;
+    Response.Free;
   end;
 end;
 
@@ -646,6 +641,8 @@ begin
       s := ReplaceAllChars(s,';',',');
       X := SO(s);
       s := X.S[AName];
+      if s.Contains('/') then
+        s := s.Substring(0,s.IndexOf('/')-1);
       if (Result.IndexOf(s) = -1) then
         Result.Add(s);
     end;

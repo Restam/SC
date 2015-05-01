@@ -576,8 +576,8 @@ begin
           EventInfStr := EventInfStr.Remove(stpos-1,'#lesson'.Length);
           EventInfStr := ReplaceAllChars(EventInfStr,';',',');
           DescriptionObject := SO(EventInfStr);
-          if ((DescriptionObject.S['grade'] <> GradeBox.Items[GradeBox.ItemIndex]) or
-          (DescriptionObject.S['major'] <> ProfileBox.Items[ProfileBox.ItemIndex])) then
+          if ((not DescriptionObject.S['grade'].Contains(GradeBox.Items[GradeBox.ItemIndex])) or
+          (not DescriptionObject.S['major'].Contains(ProfileBox.Items[ProfileBox.ItemIndex]))) then
             JSONArray.Delete(i)
           else
             i := i + 1;
@@ -641,7 +641,9 @@ begin
       s := ReplaceAllChars(s,';',',');
       X := SO(s);
       s := X.S[AName];
-      if (Result.IndexOf(s) = -1) then
+      if s.Contains('/') then
+        s := s.Substring(0,s.IndexOf('/')-1);
+      if (Result.IndexOf(s) = -1) and ((s.Length>1) or (s = '-')) then
         Result.Add(s);
     end;
   end;

@@ -366,7 +366,6 @@ begin
   EventTabFrame.EndTimeLabel.Text := 'End Time: ' + EndObject.S['dateTime'];
   EventTabFrame.SummaryLabel.Text := EventObject.S['summary'];
   desc := EventObject.S['description'];
-  ShowMessage(desc);
   if desc.Contains('#lesson') then
   begin
     EventTabFrame.LessonPanel.Visible := True;
@@ -562,7 +561,6 @@ begin
   Response := TStringStream.Create;
   try
     RequestString := BuildRequest(AStartDay, AEndDay);
-    //ShowMessage(RequestString);
     GoogleClient.Get(RequestString,Response);
     JsonObject := SO(Response.DataString);
     JSONArray := JsonObject['items'].AsArray;
@@ -586,14 +584,13 @@ begin
         except
           JSONArray.Delete(i);
         end;
-      end;
+      end
+      else
+       i := i + 1;
     end;
     EventsArray := SA(JSONArray.AsJson);
   finally
-    try
-      Response.Free;
-    except
-    end;
+    Response.Free;
   end;
 end;
 
